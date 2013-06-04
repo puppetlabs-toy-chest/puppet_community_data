@@ -1,0 +1,4 @@
+#! /usr/bin/env ruby
+#
+require 'puppet_community_data/version'
+puts "Hello World (version #{PuppetCommunityData::VERSION})"

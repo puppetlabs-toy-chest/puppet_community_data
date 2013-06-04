@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.version       = PuppetCommunityData::VERSION
   spec.authors       = ["Hailee Kenney"]
   spec.email         = ["hailee@puppetlabs.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.description   = %q{Gather data and metrics from Puppet Labs open source repositories}
+  spec.summary       = %q{Gather data and metrics from Puppet Labs open source repositories}
+  spec.homepage      = "https://github.com/hkenney/puppet_community_data"
+  spec.license       = "Apache 2.0"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

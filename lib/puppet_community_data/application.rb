@@ -39,7 +39,7 @@ module PuppetCommunityData
       return @opts[:google_account]
     end
 
-    def google_passowrd
+    def google_password
       return @opts[:google_password]
     end
 

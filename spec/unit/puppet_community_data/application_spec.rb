@@ -117,6 +117,21 @@ describe PuppetCommunityData::Application do
         it 'returns a hash of closed pull requests' do
           expect(subject.closed_pull_requests(repo)).to be_a_kind_of Hash
         end
+        it 'has integer keys for the pull request numbers' do
+          expect(subject.closed_pull_requests(repo).keys[0]).to be_a_kind_of Integer
+        end
+        it 'has values which are arrays' do
+          expect(subject.closed_pull_requests(repo).values[0]).to be_a_kind_of Array
+        end
+        it 'has two element arrays for values' do
+          expect(subject.closed_pull_requests(repo).values[0].length).to eq(2)
+        end
+        it 'has arrays for values which have an integer for the first element' do
+          expect(subject.closed_pull_requests(repo).values[0][0]).to be_a_kind_of Integer
+        end
+        it 'has arrays for values which have true or false for the second element' do
+          expect(subject.closed_pull_requests(repo).values[0][1]).to be_a_kind_of TrueClass or FalseClass
+        end
         it 'includes pull request 123' do
           expect(subject.closed_pull_requests(repo).keys).to include(123)
         end

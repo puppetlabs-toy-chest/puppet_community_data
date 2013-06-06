@@ -9,8 +9,12 @@ describe PuppetCommunityData::Application do
   CACHE = {}
 
   def closed_puppet_pull_requests
+    CACHE[:closed_puppet_pull_requests] ||= read_request_fixture
+  end
+
+  def read_request_fixture
     fpath = File.join(SPECDIR, 'fixtures', 'closed_pull_requests.json')
-    CACHE[:closed_puppet_pull_requests] ||= JSON.parse(File.read(fpath))
+    JSON.parse(File.read(fpath))
   end
 
   subject do
@@ -117,38 +121,43 @@ describe PuppetCommunityData::Application do
 
     describe '#closed_pull_requests', :focus => true do
       context "Repository puppetlabs/puppetlabs-stdlib" do
-        let(:repo) { "puppetlabs/puppet" }
+        let(:repo) { "puppetlabs/puppetlabs-stdlib" }
 
-        before :each do
-          subject.github_api.stub(:pull_requests).with(repo, 'closed').and_return(closed_puppet_pull_requests)
+        subject { described_class.new([]).closed_pull_requests(repo) }
+        subject do
+          s = described_class.new([])
+          s.github_api.stub(:pull_requests).with(repo, 'closed').and_return(closed_puppet_pull_requests)
+          s.closed_pull_requests(repo)
         end
 
         it 'returns a hash of closed pull requests' do
-          expect(subject.closed_pull_requests(repo)).to be_a_kind_of Hash
+          expect(subject).to be_a_kind_of Hash
         end
 
         it 'has integer keys for the pull request numbers' do
-          expect(subject.closed_pull_requests(repo).keys[0]).to be_a_kind_of Integer
+          expect(subject.keys[0]).to be_a_kind_of Integer
         end
 
-        it 'has values which are arrays' do
-          expect(subject.closed_pull_requests(repo).values[0]).to be_a_kind_of Array
-        end
+        describe "values" do
+          it 'has values which are arrays' do
+            expect(subject.values[0]).to be_a_kind_of Array
+          end
 
-        it 'has two element arrays for values' do
-          expect(subject.closed_pull_requests(repo).values[0].length).to eq(2)
-        end
+          it 'has two element arrays for values' do
+            expect(subject.values[0].length).to eq(2)
+          end
 
-        it 'has arrays for values which have an integer for the first element' do
-          expect(subject.closed_pull_requests(repo).values[0][0]).to be_a_kind_of Integer
-        end
+          it 'has arrays for values which have an integer for the first element' do
+            expect(subject.values[0][0]).to be_a_kind_of Integer
+          end
 
-        it 'has arrays for values which have true or false for the second element' do
-          expect(subject.closed_pull_requests(repo).values[0][1]).to be_a_kind_of TrueClass or FalseClass
+          it 'has arrays for values which have true or false for the second element' do
+            expect([TrueClass, FalseClass].any? {|bool| subject.values[0][1].class == bool}).to be_true
+          end
         end
 
         it 'includes pull request 123' do
-          expect(subject.closed_pull_requests(repo).keys).to include(123)
+          expect(subject.keys).to include(123)
         end
       end
     end

@@ -84,6 +84,52 @@ module PuppetCommunityData
       return pull_requests_by_num
     end
 
+    ##
+    # Given a hash of pull requests as parsed by closed_pull_requests,
+    # pull_request_lifetimes will generate an array of integers which
+    # contains only the pull request lifetimes
+    #
+    # @param [Hash] pull_requests Pull requests sorted by number
+    #
+    # @return [Array] of pull requests lifetimes as integers
+    #
+    def pull_request_lifetimes(pull_requests)
+      pull_request_lifetimes = Array.new
+
+      pull_requests.each do |key, value|
+        pull_request_lifetimes.push(value[0])
+      end
+
+      return pull_request_lifetimes
+    end
+
+    ##
+    # Given an array of pull request lifetimes, calculate some
+    # useful things about that set of data
+    #
+    # @param [Array] pull_request_lifetimes
+    #
+    # @return [Hash] a hash containing the shortest, longest,
+    # average, and medium pull request lifetimes
+    #
+    def calculate_averages(pull_request_lifetimes)
+      pull_request_data = Hash.new
+
+      shortest = pull_request_lifetimes.min
+      pull_request_data["shortest"] = shortest
+      longest = pull_request_lifetimes.max
+      pull_request_data["longest"] = longest
+      total = pull_request_lifetimes.inject(:+)
+      len = pull_request_lifetimes.length
+      average = (total.to_f / len).to_i
+      pull_request_data["average"] = average
+      sorted = pull_request_lifetimes.sort
+      median = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_i / 2
+      pull_request_data["median"] = median
+
+      return pull_request_data
+    end
+
     #
     # parse_options parses the command line arguments and sets the @opts
     # instance variable in the application instance.

@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
-group :development do
-  gem "pry"
+platforms :ruby do
+  gem 'pry', :group => :development
+  gem 'yard', :group => :development
+  gem 'redcarpet', :group => :development
 end
 
 gem 'rspec', :group => :test

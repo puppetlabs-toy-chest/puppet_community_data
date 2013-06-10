@@ -29,6 +29,10 @@ module PuppetCommunityData
     # run the application.
     def run
       parse_options!
+
+      pull_requests = closed_pull_requests("puppetlabs/facter")
+      write_to_json("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.json", pull_requests)
+      write_to_csv("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.csv", pull_requests)
     end
 
     def version
@@ -67,9 +71,10 @@ module PuppetCommunityData
       pull_requests_by_num = Hash.new
 
       closed_pull_requests.each do |pr|
-
         if (pr['merged_at'] != nil)
           was_merged =true
+        else
+          was_merged = false
         end
 
         open_time = pr['created_at']
@@ -155,5 +160,37 @@ module PuppetCommunityData
           :default => (env['PCD_GITHUB_OAUTH_TOKEN'] || '1234changeme')
       end
     end
+
+    def write_to_json(file_name, to_write)
+      write(file_name, JSON.pretty_generate(to_write))
+    end
+
+    def write_to_csv(file_name, to_write)
+      if to_write.kind_of?(Hash)
+        csv_hash_write(file_name, to_write)
+      else
+        csv_array_write(file_name, to_write)
+      end
+    end
+
+    ##
+    # write is a private delegate method to make it easier to test File.open
+    #
+    # @api private
+    def write(filename, data)
+      File.open(filename, "w+") {|f| f.write(data) }
+    end
+
+    def csv_array_write(filename, data)
+      CSV.open(filename, "w+") do |csv|
+        csv << data
+      end
+    end
+
+    def csv_hash_write(filename, data)
+      CSV.open(filename, "w+") { |csv| data.to_a.each {|elem| csv << elem}}
+    end
+
+    private :write, :csv_array_write, :csv_hash_write
   end
 end

@@ -119,7 +119,7 @@ describe PuppetCommunityData::Application do
       end
     end
 
-    describe '#closed_pull_requests', :focus => true do
+    describe '#closed_pull_requests' do
       context "Repository puppetlabs/puppetlabs-stdlib" do
         let(:repo) { "puppetlabs/puppetlabs-stdlib" }
 
@@ -189,6 +189,52 @@ describe PuppetCommunityData::Application do
 
       it 'returns the correct median' do
         expect(subject["median"]).to eq(15)
+      end
+    end
+
+    describe '#write_to_json', :focus => true do
+      let(:filename) {"/tmp/output.json"}
+      let(:example1) {{'somekey' => 'somevalue'}}
+      let(:example2) {[1,2,3,4]}
+      subject {described_class.new([])}
+
+      context 'when a Hash is given' do
+        it 'writes a JSON hash to the filename' do
+          subject.should_receive(:write).with(filename, JSON.pretty_generate(example1))
+
+          subject.write_to_json(filename, example1)
+        end
+      end
+
+      context 'when an Array is given' do
+        it 'writes a JSON array to the filename' do
+          subject.should_receive(:write).with(filename, JSON.pretty_generate(example2))
+
+          subject.write_to_json(filename, example2)
+        end
+      end
+    end
+
+    describe '#write_to_csv', :focus => true do
+      let(:filename) {"/temp/output.csv"}
+      let(:example1) {{'somekey' => 'somevalue'}}
+      let(:example2) {[1,2,3,4]}
+      subject {described_class.new([])}
+
+      context 'when a Hash is given' do
+        it 'writes a CSV hash to the filename' do
+          subject.should_receive(:csv_write).with(filename, example1)
+
+          subject.write_to_csv(filename, example1)
+        end
+      end
+
+      context 'when an Array is given' do
+        it 'writes a CSV array to the filename'do
+          subject.should_receive(:csv_write).with(filename, example2)
+
+          subject.write_to_csv(filename, example2)
+        end
       end
     end
   end

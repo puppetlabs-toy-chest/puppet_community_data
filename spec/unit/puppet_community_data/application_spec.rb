@@ -21,10 +21,6 @@ describe PuppetCommunityData::Application do
     described_class.new([])
   end
 
-  it "runs" do
-    subject.run
-  end
-
   describe "arguments" do
     let(:argv) do
       ['--google-account', 'changethis@acme.com',
@@ -43,67 +39,55 @@ describe PuppetCommunityData::Application do
       end
 
       it 'sets the :google_account key after running' do
-        subject.run
+        subject.parse_options!
         expect(subject.opts[:google_account]).to eq 'changethis@acme.com'
       end
 
       it 'sets the :google_password key after running' do
-        subject.run
+        subject.parse_options!
         expect(subject.opts[:google_password]).to eq 'mypassword'
       end
 
       it 'sets the :spreadsheet_key after running' do
-        subject.run
+        subject.parse_options!
         expect(subject.opts[:spreadsheet_key]).to eq '1234key'
       end
 
       it 'sets the :github_oauth_token after running' do
-        subject.run
+        subject.parse_options!
         expect(subject.opts[:github_oauth_token]).to eq '1234token'
       end
     end
 
     describe 'command line options' do
-      describe '#google_account' do
-        it "accepts --google-account" do
-          subject.run
-        end
+      it "accepts command line options" do
+        subject.parse_options!
+      end
 
+      context '#google_account' do
         it "returns the string account identifier" do
-          subject.run
+          subject.parse_options!
           expect(subject.google_account).to eq("changethis@acme.com")
         end
       end
 
-      describe '#google_password' do
-        it "accepts --google-password" do
-          subject.run
-        end
-
+      context '#google_password' do
         it "returns the string password identifier" do
-          subject.run
+          subject.parse_options!
           expect(subject.google_password).to eq("mypassword")
         end
       end
 
-      describe '#spreadsheet_key' do
-        it "accepts --spreadsheet-key" do
-          subject.run
-        end
-
+      context '#spreadsheet_key' do
         it "returns the string account identifier" do
-          subject.run
+          subject.parse_options!
           expect(subject.spreadsheet_key).to eq("1234key")
         end
       end
 
       describe 'github_oauth_token' do
-        it "accepts --github-oauth-token" do
-          subject.run
-        end
-
         it "returns the string account identifier" do
-          subject.run
+          subject.parse_options!
           expect(subject.github_oauth_token).to eq("1234token")
         end
       end
@@ -223,7 +207,7 @@ describe PuppetCommunityData::Application do
 
       context 'when a Hash is given' do
         it 'writes a CSV hash to the filename' do
-          subject.should_receive(:csv_write).with(filename, example1)
+          subject.should_receive(:csv_hash_write).with(filename, example1)
 
           subject.write_to_csv(filename, example1)
         end
@@ -231,7 +215,7 @@ describe PuppetCommunityData::Application do
 
       context 'when an Array is given' do
         it 'writes a CSV array to the filename'do
-          subject.should_receive(:csv_write).with(filename, example2)
+          subject.should_receive(:csv_array_write).with(filename, example2)
 
           subject.write_to_csv(filename, example2)
         end

@@ -31,8 +31,6 @@ module PuppetCommunityData
       parse_options!
 
       pull_requests = closed_pull_requests("puppetlabs/facter")
-      write_to_json("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.json", pull_requests)
-      write_to_csv("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.csv", pull_requests)
     end
 
     def version
@@ -166,7 +164,7 @@ module PuppetCommunityData
     end
 
     def write_to_csv(file_name, to_write)
-      if to_write.kind_of?(Hash)
+      if(to_write.kind_of?(Hash))
         csv_hash_write(file_name, to_write)
       else
         csv_array_write(file_name, to_write)

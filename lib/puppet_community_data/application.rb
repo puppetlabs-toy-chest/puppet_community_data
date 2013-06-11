@@ -30,7 +30,9 @@ module PuppetCommunityData
     def run
       parse_options!
 
-      pull_requests = closed_pull_requests("puppetlabs/facter")
+      pull_requests = closed_pull_requests("puppetlabs/hiera")
+      write_to_json("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.json", pull_requests)
+      write_to_csv("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.csv", pull_requests)
     end
 
     def version

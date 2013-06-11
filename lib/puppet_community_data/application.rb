@@ -135,11 +135,9 @@ module PuppetCommunityData
       return pull_request_data
     end
 
-    #
+    ##
     # parse_options parses the command line arguments and sets the @opts
     # instance variable in the application instance.
-    #
-    # @api private
     #
     # @return [Hash] options hash
     def parse_options!
@@ -161,10 +159,24 @@ module PuppetCommunityData
       end
     end
 
+    ##
+    # write_to_json takes a given input, converts it to json,
+    # and writes it to the specified file path
+    #
+    # @param [String] file_name is the file the data will
+    # be written to
+    # @param [Array, Hash] to_write is the data to be written
     def write_to_json(file_name, to_write)
       write(file_name, JSON.pretty_generate(to_write))
     end
 
+    ##
+    # write_to_csv takes the given input, parses it
+    # appropriately, and writes it to the specified file path
+    #
+    # @param [String] file_name is the file the data will be
+    # written to
+    # @param [Array, Hash] to_write is the data to be written
     def write_to_csv(file_name, to_write)
       if(to_write.kind_of?(Hash))
         csv_hash_write(file_name, to_write)
@@ -181,16 +193,30 @@ module PuppetCommunityData
       File.open(filename, "w+") {|f| f.write(data) }
     end
 
+    private :write
+
+    ##
+    # csv_array_write is a private delegate method to make it easier to test
+    # CSV.open
+    #
+    # @api private
     def csv_array_write(filename, data)
       CSV.open(filename, "w+") do |csv|
         csv << data
       end
     end
 
+    private :csv_array_write
+
+    ##
+    # csv_hash_write is a private delegate method designed to handle hash input
+    # and to make it easier to test CSV.open
+    #
+    # @api private
     def csv_hash_write(filename, data)
       CSV.open(filename, "w+") { |csv| data.to_a.each {|elem| csv << elem}}
     end
 
-    private :write, :csv_array_write, :csv_hash_write
+    private :csv_hash_write
   end
 end

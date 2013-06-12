@@ -148,10 +148,48 @@ describe PuppetCommunityData::Application do
 
     describe '#pull_request_lifetimes' do
       let(:pull_requests) {{10 => [30, true], 11 => [5, false], 12 => [100, true]}}
-      subject { described_class.new([]).pull_request_lifetimes(pull_requests)}
+      subject {described_class.new([]).pull_request_lifetimes(pull_requests)}
 
       it 'returns liftimes as an array of integers' do
         expect(subject).to eq([30,5,100])
+      end
+    end
+
+    describe '#generate_pull_request_objects' do
+      let(:pull_requests) {{10 => [30, true], 11 => [5, false], 12 => [100, true]}}
+      let(:repo) {"puppetlabs/puppet"}
+      subject {described_class.new([])}
+
+      it 'creates the @pull_requests array' do
+        subject.generate_pull_request_objects(pull_requests,repo)
+        expect(subject.pull_requests).to be_a_kind_of Array
+      end
+
+      it 'adds the correct number of elements' do
+        subject.generate_pull_request_objects(pull_requests, repo)
+        expect(subject.pull_requests.length).to eq(3)
+      end
+
+      context 'for an instance of pull request added' do
+        it 'sets the correct pull request number' do
+          subject.generate_pull_request_objects(pull_requests, repo)
+          expect(subject.pull_requests[0].pull_request_num).to eq(10)
+        end
+
+        it 'sets the correct pull request repository' do
+          subject.generate_pull_request_objects(pull_requests, repo)
+          expect(subject.pull_requests[0].pull_request_repo).to eq(repo)
+        end
+
+        it 'sets the correct pull request lifetime' do
+          subject.generate_pull_request_objects(pull_requests, repo)
+          expect(subject.pull_requests[0].pull_request_lifetime).to eq(30)
+        end
+
+        it 'sets the correct merge status' do
+          subject.generate_pull_request_objects(pull_requests, repo)
+          expect(subject.pull_requests[0].pull_request_merge_status).to eq(true)
+        end
       end
     end
 

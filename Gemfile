@@ -4,6 +4,7 @@ platforms :ruby do
   gem 'pry', :group => :development
   gem 'yard', :group => :development
   gem 'redcarpet', :group => :development
+  gem 'sinatra', :group => :development
 end
 
 gem 'rspec', :group => :test

@@ -6,6 +6,7 @@ platforms :ruby do
   gem 'yard', :group => :development
   gem 'redcarpet', :group => :development
   gem 'sinatra'
+  gem 'pg'
 end
 
 gem 'rspec', :group => :test

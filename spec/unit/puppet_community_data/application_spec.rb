@@ -128,7 +128,7 @@ describe PuppetCommunityData::Application do
           end
 
           it 'has two element arrays for values' do
-            expect(subject.values[0].length).to eq(2)
+            expect(subject.values[0].length).to eq(3)
           end
 
           it 'has arrays for values which have an integer for the first element' do
@@ -137,6 +137,10 @@ describe PuppetCommunityData::Application do
 
           it 'has arrays for values which have true or false for the second element' do
             expect([TrueClass, FalseClass].any? {|bool| subject.values[0][1].class == bool}).to be_true
+          end
+
+          it 'has arrays for values which have a string for the third element' do
+            expect(subject.values[0][2]).to be_a_kind_of String
           end
         end
 
@@ -147,47 +151,46 @@ describe PuppetCommunityData::Application do
     end
 
     describe '#pull_request_lifetimes' do
-      let(:pull_requests) {{10 => [30, true], 11 => [5, false], 12 => [100, true]}}
+      let(:pull_requests) {{10 => [30, true, 'puppetlabs/puppet'], 11 => [5, false, 'puppetlabs/puppet']}}
       subject {described_class.new([]).pull_request_lifetimes(pull_requests)}
 
       it 'returns liftimes as an array of integers' do
-        expect(subject).to eq([30,5,100])
+        expect(subject).to eq([30,5])
       end
     end
 
     describe '#generate_pull_request_objects' do
-      let(:pull_requests) {{10 => [30, true], 11 => [5, false], 12 => [100, true]}}
-      let(:repo) {"puppetlabs/puppet"}
+      let(:pull_requests) {{10 => [30, true, 'puppetlabs/puppet'], 11 => [5, false, 'puppetlabs/puppet']}}
       subject {described_class.new([])}
 
       it 'creates the @pull_requests array' do
-        subject.generate_pull_request_objects(pull_requests,repo)
+        subject.generate_pull_request_objects(pull_requests)
         expect(subject.pull_requests).to be_a_kind_of Array
       end
 
       it 'adds the correct number of elements' do
-        subject.generate_pull_request_objects(pull_requests, repo)
-        expect(subject.pull_requests.length).to eq(3)
+        subject.generate_pull_request_objects(pull_requests)
+        expect(subject.pull_requests.length).to eq(2)
       end
 
       context 'for an instance of pull request added' do
         it 'sets the correct pull request number' do
-          subject.generate_pull_request_objects(pull_requests, repo)
+          subject.generate_pull_request_objects(pull_requests)
           expect(subject.pull_requests[0].pull_request_num).to eq(10)
         end
 
         it 'sets the correct pull request repository' do
-          subject.generate_pull_request_objects(pull_requests, repo)
-          expect(subject.pull_requests[0].pull_request_repo).to eq(repo)
+          subject.generate_pull_request_objects(pull_requests)
+          expect(subject.pull_requests[0].pull_request_repo).to eq('puppetlabs/puppet')
         end
 
         it 'sets the correct pull request lifetime' do
-          subject.generate_pull_request_objects(pull_requests, repo)
+          subject.generate_pull_request_objects(pull_requests)
           expect(subject.pull_requests[0].pull_request_lifetime).to eq(30)
         end
 
         it 'sets the correct merge status' do
-          subject.generate_pull_request_objects(pull_requests, repo)
+          subject.generate_pull_request_objects(pull_requests)
           expect(subject.pull_requests[0].pull_request_merge_status).to eq(true)
         end
       end

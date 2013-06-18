@@ -36,7 +36,7 @@ module PuppetCommunityData
 
       pull_requests = closed_pull_requests("puppetlabs/hiera")
       write_to_json("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.json", pull_requests)
-      write_to_csv("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.csv", pull_requests)
+      write_to_csv("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.csv",pull_requests)
     end
 
     def version
@@ -87,7 +87,8 @@ module PuppetCommunityData
         close_time = (Chronic.parse(close_time)).to_time
         pull_request_num = pr['number']
         pull_request_ttl = ((close_time - open_time)/60).to_i
-        pull_requests_by_num[pull_request_num] = [pull_request_ttl,was_merged]
+        pull_requests_by_num[pull_request_num] = [pull_request_ttl, was_merged, repo]
+
       end
 
       return pull_requests_by_num
@@ -105,11 +106,11 @@ module PuppetCommunityData
     # @param [String] repo is the name of the repository that the
     # pull requests belong to (i.e. "puppetlabs/puppet")
     #
-    def generate_pull_request_objects(pull_request_hash, repo)
+    def generate_pull_request_objects(pull_request_hash)
       @pull_requests = Array.new
 
       pull_request_hash.each do |key, value|
-        @pull_requests.push(PullRequest.new(key,repo,value[0],value[1]))
+        @pull_requests.push(PullRequest.new(key,value[2],value[0],value[1]))
       end
     end
 
@@ -226,7 +227,11 @@ module PuppetCommunityData
     # @api private
     def csv_array_write(filename, data)
       CSV.open(filename, "w+") do |csv|
-        csv << data
+        csv << ["LIFETIMES"]
+        data.each do |value|
+          to_write = [value]
+          csv << to_write
+        end
       end
     end
 
@@ -238,7 +243,13 @@ module PuppetCommunityData
     #
     # @api private
     def csv_hash_write(filename, data)
-      CSV.open(filename, "w+") { |csv| data.to_a.each {|elem| csv << elem}}
+      CSV.open(filename, "w+") do |csv|
+        csv << ["PR_NUM", "REPO", "LIFETIME" "MERGE_STATUS"]
+        data.each do |key, value|
+          row = [key, value[2], value[0], value[1]]
+          csv << row
+        end
+      end
     end
 
     private :csv_hash_write

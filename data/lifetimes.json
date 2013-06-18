@@ -1,494 +1,617 @@
 {
   "135": [
     981,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "134": [
     6394,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "133": [
     1559,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "132": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "131": [
     0,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "130": [
     3,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "129": [
     61,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "128": [
     8,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "127": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "126": [
     336,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "125": [
     60,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "124": [
     1113,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "123": [
     13311,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "122": [
     242,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "121": [
     3,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "120": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "119": [
     0,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "118": [
     38,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "117": [
     23196,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "116": [
     27434,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "115": [
     2966,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "114": [
     21102,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "113": [
     21456,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "111": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "110": [
     0,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "109": [
     4,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "108": [
     63,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "107": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "106": [
     31,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "105": [
     7,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "104": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "103": [
     1414,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "102": [
     27615,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "101": [
     85168,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "100": [
     227392,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "99": [
     7185,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "98": [
     140357,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "97": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "96": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "95": [
     14,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "94": [
     92,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "93": [
     15,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "92": [
     1011,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "91": [
     30,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "90": [
     150,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "89": [
     8,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "88": [
     238,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "87": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "86": [
     8327,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "85": [
     38,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "84": [
     178,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "83": [
     1187,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "82": [
     4,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "81": [
     2,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "80": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "79": [
     4337,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "78": [
     31,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "77": [
     14398,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "76": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "75": [
     3878,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "74": [
     31,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "73": [
     1,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "72": [
     143,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "71": [
     0,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "70": [
     300,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "69": [
     11312,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "68": [
     1301,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "67": [
     0,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "66": [
     1609,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "65": [
     5,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "64": [
     99,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "63": [
     4160,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "62": [
     4079,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "61": [
     6,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "60": [
     2,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "59": [
     86,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "58": [
     17,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "57": [
     1687,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "56": [
     12512,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "55": [
     83,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "54": [
     761,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "53": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "52": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "51": [
     5,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "50": [
     30,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "49": [
     3989,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "48": [
     446032,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "47": [
     1450,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "46": [
     15930,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "45": [
     115,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "44": [
     212,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "43": [
     1215,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "42": [
     1225,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "41": [
     1428,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "40": [
     3909,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "39": [
     20395,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "38": [
     10073,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "37": [
     144013,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "36": [
     94,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "35": [
     174615,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "34": [
     7436,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "33": [
     2981,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "32": [
     185084,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "31": [
     166814,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "30": [
     37568,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "29": [
     289143,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "28": [
     10,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "27": [
     78,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "26": [
     0,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "25": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "24": [
     23403,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "23": [
     276051,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "21": [
     2445,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "20": [
     1195,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "18": [
     415,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "17": [
     8,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "16": [
     85,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "12": [
     278,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "10": [
     140423,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "7": [
     33,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "6": [
     233,
-    true
+    true,
+    "puppetlabs/hiera"
   ],
   "5": [
     5186,
-    false
+    false,
+    "puppetlabs/hiera"
   ],
   "4": [
     1,
-    true
+    true,
+    "puppetlabs/hiera"
   ]
 }

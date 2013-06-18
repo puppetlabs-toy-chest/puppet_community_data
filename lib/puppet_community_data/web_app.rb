@@ -1,5 +1,9 @@
 require 'sinatra'
 
-get '/' do
-  "Hello world!"
+module PuppetCommunityData
+  class WebApp < Sinatra::Base
+    get '/' do
+      "Hello world! From #{self.class.inspect}"
+    end
+  end
 end

@@ -1,0 +1,8 @@
+production:
+  adapter: postgresql
+  host: localhost
+  encoding: unicode
+  database: pull-requests
+  pool: 5
+  username:
+  password:

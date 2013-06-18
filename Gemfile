@@ -5,9 +5,15 @@ platforms :ruby do
   gem 'pry', :group => :development
   gem 'yard', :group => :development
   gem 'redcarpet', :group => :development
-  gem 'sinatra'
-  gem 'pg'
 end
+
+group :production do
+  gem 'thin'
+end
+
+gem 'pg'
+gem 'sinatra'
+gem 'sinatra-activerecord'
 
 gem 'rspec', :group => :test
 

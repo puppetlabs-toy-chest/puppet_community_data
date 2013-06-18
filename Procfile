@@ -1,1 +1,1 @@
-web: bundle exec ruby lib/puppet_community_data/web_app.rb -p $PORT
+web: bundle exec thin start -p $PORT -e $RACK_ENV

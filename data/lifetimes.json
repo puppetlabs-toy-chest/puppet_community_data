@@ -1,4 +1,9 @@
 {
+  "136": [
+    1346,
+    false,
+    "puppetlabs/hiera"
+  ],
   "135": [
     981,
     true,

@@ -74,6 +74,8 @@ module PuppetCommunityData
       closed_pull_requests = github_api.pull_requests(repo, 'closed')
       pull_requests_by_num = Hash.new
 
+      repo_info = repo.split('/');
+
       closed_pull_requests.each do |pr|
         if (pr['merged_at'] != nil)
           was_merged =true
@@ -87,7 +89,7 @@ module PuppetCommunityData
         close_time = (Chronic.parse(close_time)).to_time
         pull_request_num = pr['number']
         pull_request_ttl = ((close_time - open_time)/60).to_i
-        pull_requests_by_num[pull_request_num] = [pull_request_ttl, was_merged, repo]
+        pull_requests_by_num[pull_request_num] = [pull_request_ttl, was_merged, repo_info[1], repo_info[0]]
 
       end
 

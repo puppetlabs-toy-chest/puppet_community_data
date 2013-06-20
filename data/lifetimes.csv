@@ -1,4 +1,5 @@
 PR_NUM,REPO,LIFETIMEMERGE_STATUS
+136,puppetlabs/hiera,1346,false
 135,puppetlabs/hiera,981,true
 134,puppetlabs/hiera,6394,true
 133,puppetlabs/hiera,1559,true

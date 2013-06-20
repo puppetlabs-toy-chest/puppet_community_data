@@ -1,6 +1,6 @@
 require 'puppet_community_data'
 require 'puppet_community_data/version'
-require 'puppet_community_data/pull_request'
+require 'puppet_community_data/pull_request_object'
 
 require 'octokit'
 require 'table_print'
@@ -110,7 +110,7 @@ module PuppetCommunityData
       @pull_requests = Array.new
 
       pull_request_hash.each do |key, value|
-        @pull_requests.push(PullRequest.new(key,value[2],value[0],value[1]))
+        @pull_requests.push(PullRequestObject.new(key,value[2],value[0],value[1]))
       end
     end
 

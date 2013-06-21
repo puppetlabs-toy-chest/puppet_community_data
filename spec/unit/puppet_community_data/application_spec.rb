@@ -22,11 +22,7 @@ describe PuppetCommunityData::Application do
   end
 
   describe "arguments" do
-    let(:argv) do
-      ['--google-account', 'changethis@acme.com',
-       '--google-password', 'mypassword',
-       '--spreadsheet-key', '1234key',
-       '--github-oauth-token', '1234token']
+    let(:argv) do ['--github-oauth-token', '1234token']
     end
 
     subject do
@@ -38,21 +34,6 @@ describe PuppetCommunityData::Application do
         expect(subject.opts).to eq({})
       end
 
-      it 'sets the :google_account key after running' do
-        subject.parse_options!
-        expect(subject.opts[:google_account]).to eq 'changethis@acme.com'
-      end
-
-      it 'sets the :google_password key after running' do
-        subject.parse_options!
-        expect(subject.opts[:google_password]).to eq 'mypassword'
-      end
-
-      it 'sets the :spreadsheet_key after running' do
-        subject.parse_options!
-        expect(subject.opts[:spreadsheet_key]).to eq '1234key'
-      end
-
       it 'sets the :github_oauth_token after running' do
         subject.parse_options!
         expect(subject.opts[:github_oauth_token]).to eq '1234token'
@@ -62,27 +43,6 @@ describe PuppetCommunityData::Application do
     describe 'command line options' do
       it "accepts command line options" do
         subject.parse_options!
-      end
-
-      context '#google_account' do
-        it "returns the string account identifier" do
-          subject.parse_options!
-          expect(subject.google_account).to eq("changethis@acme.com")
-        end
-      end
-
-      context '#google_password' do
-        it "returns the string password identifier" do
-          subject.parse_options!
-          expect(subject.google_password).to eq("mypassword")
-        end
-      end
-
-      context '#spreadsheet_key' do
-        it "returns the string account identifier" do
-          subject.parse_options!
-          expect(subject.spreadsheet_key).to eq("1234key")
-        end
       end
 
       describe 'github_oauth_token' do
@@ -128,7 +88,7 @@ describe PuppetCommunityData::Application do
           end
 
           it 'has two element arrays for values' do
-            expect(subject.values[0].length).to eq(3)
+            expect(subject.values[0].length).to eq(4)
           end
 
           it 'has arrays for values which have an integer for the first element' do
@@ -144,6 +104,10 @@ describe PuppetCommunityData::Application do
           end
         end
 
+        it 'has arrays for values which have a string for the forth element' do
+          expect(subject.values[0][3]).to be_a_kind_of String
+        end
+
         it 'includes pull request 123' do
           expect(subject.keys).to include(123)
         end
@@ -156,43 +120,6 @@ describe PuppetCommunityData::Application do
 
       it 'returns liftimes as an array of integers' do
         expect(subject).to eq([30,5])
-      end
-    end
-
-    describe '#generate_pull_request_objects' do
-      let(:pull_requests) {{10 => [30, true, 'puppetlabs/puppet'], 11 => [5, false, 'puppetlabs/puppet']}}
-      subject {described_class.new([])}
-
-      it 'creates the @pull_requests array' do
-        subject.generate_pull_request_objects(pull_requests)
-        expect(subject.pull_requests).to be_a_kind_of Array
-      end
-
-      it 'adds the correct number of elements' do
-        subject.generate_pull_request_objects(pull_requests)
-        expect(subject.pull_requests.length).to eq(2)
-      end
-
-      context 'for an instance of pull request added' do
-        it 'sets the correct pull request number' do
-          subject.generate_pull_request_objects(pull_requests)
-          expect(subject.pull_requests[0].pull_request_num).to eq(10)
-        end
-
-        it 'sets the correct pull request repository' do
-          subject.generate_pull_request_objects(pull_requests)
-          expect(subject.pull_requests[0].pull_request_repo).to eq('puppetlabs/puppet')
-        end
-
-        it 'sets the correct pull request lifetime' do
-          subject.generate_pull_request_objects(pull_requests)
-          expect(subject.pull_requests[0].pull_request_lifetime).to eq(30)
-        end
-
-        it 'sets the correct merge status' do
-          subject.generate_pull_request_objects(pull_requests)
-          expect(subject.pull_requests[0].pull_request_merge_status).to eq(true)
-        end
       end
     end
 

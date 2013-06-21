@@ -1,5 +1,6 @@
 require 'puppet_community_data'
 require 'puppet_community_data/version'
+require 'puppet_community_data/repository'
 
 require 'octokit'
 require 'table_print'
@@ -53,18 +54,16 @@ module PuppetCommunityData
     # closed_pull_requests extracts specific information from all of the pull
     # requests on Github.
     #
-    # @param [String] repo The repository to obtain all pull requests from.
+    # @param repo [Repostiory] The repository to obtain all pull requests from.
     #
     # @return [Hash] keyed by the pull request number with computed metrics.
     def closed_pull_requests(repo)
-      closed_pull_requests = github_api.pull_requests(repo, 'closed')
+      closed_pull_requests = github_api.pull_requests(repo.full_name, 'closed')
       pull_requests_by_num = Hash.new
-
-      repo_info = repo.split('/');
 
       closed_pull_requests.each do |pr|
         if (pr['merged_at'] != nil)
-          was_merged =true
+          was_merged = true
         else
           was_merged = false
         end
@@ -75,7 +74,7 @@ module PuppetCommunityData
         close_time = (Chronic.parse(close_time)).to_time
         pull_request_num = pr['number']
         pull_request_ttl = ((close_time - open_time)/60).to_i
-        pull_requests_by_num[pull_request_num] = [pull_request_ttl, was_merged, repo_info[1], repo_info[0]]
+        pull_requests_by_num[pull_request_num] = [pull_request_ttl, was_merged, repo.name, repo.owner]
 
       end
 

@@ -65,12 +65,13 @@ describe PuppetCommunityData::Application do
 
     describe '#closed_pull_requests' do
       context "Repository puppetlabs/puppetlabs-stdlib" do
-        let(:repo) { "puppetlabs/puppetlabs-stdlib" }
+        let(:full_name) { "puppetlabs/puppetlabs-stdlib" }
+        let(:repo) { PuppetCommunityData::Repository.new(full_name) }
 
         subject { described_class.new([]).closed_pull_requests(repo) }
         subject do
           s = described_class.new([])
-          s.github_api.stub(:pull_requests).with(repo, 'closed').and_return(closed_puppet_pull_requests)
+          s.github_api.stub(:pull_requests).with(full_name, 'closed').and_return(closed_puppet_pull_requests)
           s.closed_pull_requests(repo)
         end
 

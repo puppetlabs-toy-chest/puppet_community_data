@@ -102,33 +102,6 @@ module PuppetCommunityData
     end
 
     ##
-    # Given an array of pull request lifetimes, calculate some
-    # useful things about that set of data
-    #
-    # @param [Array] pull_request_lifetimes
-    #
-    # @return [Hash] a hash containing the shortest, longest,
-    # average, and medium pull request lifetimes
-    #
-    def calculate_averages(pull_request_lifetimes)
-      pull_request_data = Hash.new
-
-      shortest = pull_request_lifetimes.min
-      pull_request_data["shortest"] = shortest
-      longest = pull_request_lifetimes.max
-      pull_request_data["longest"] = longest
-      total = pull_request_lifetimes.inject(:+)
-      len = pull_request_lifetimes.length
-      average = (total.to_f / len).to_i
-      pull_request_data["average"] = average
-      sorted = pull_request_lifetimes.sort
-      median = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_i / 2
-      pull_request_data["median"] = median
-
-      return pull_request_data
-    end
-
-    ##
     # parse_options parses the command line arguments and sets the @opts
     # instance variable in the application instance.
     #

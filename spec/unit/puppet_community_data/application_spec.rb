@@ -123,27 +123,6 @@ describe PuppetCommunityData::Application do
       end
     end
 
-    describe '#calculate averages' do
-      let(:lifetimes) {[15,30,5,20,10]}
-      subject {described_class.new([]).calculate_averages(lifetimes)}
-
-      it 'returns the correct shortest lifetime' do
-        expect(subject["shortest"]).to eq(5)
-      end
-
-      it 'returns the correct longest lifetime' do
-        expect(subject["longest"]).to eq(30)
-      end
-
-      it 'returns the correct average lifetime' do
-        expect(subject["average"]).to eq(16)
-      end
-
-      it 'returns the correct median' do
-        expect(subject["median"]).to eq(15)
-      end
-    end
-
     describe '#write_to_json', :focus => true do
       let(:filename) {"/tmp/output.json"}
       let(:example1) {{'somekey' => 'somevalue'}}

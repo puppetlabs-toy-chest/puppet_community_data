@@ -15,23 +15,15 @@ module PuppetCommunityData
     hiera_pull_requests = @application.closed_pull_requests("puppetlabs/hiera")
     facter_pull_requests = @application.closed_pull_requests("puppetlabs/facter")
 
-    hiera_pull_requests.each do |key, value|
-      if !(PullRequest.exists?(:pull_request_number => key, :repository_name => value[2]))
-        pull_request = PullRequest.create(:pull_request_number => key,
-                                          :repository_name => value[2],
-                                          :repository_owner => value[3],
-                                          :lifetime_minutes => value[0],
-                                          :merged_status => value[1])
-     end
+    hiera_pull_requests.each do |pull_request_num, pull_request|
+      if pull_request.new_record?
+        pull_request.save
+      end
     end
 
-    facter_pull_requests.each do |key, value|
-      if !(PullRequest.exists?(:pull_request_number => key, :repository_name => value[2]))
-        pull_request = PullRequest.create(:pull_request_number => key,
-                                         :repository_name => value[2],
-                                          :repository_owner => value[3],
-                                          :lifetime_minutes => value[0],
-                                          :merged_status => value[1])
+    facter_pull_requests.each do |pull_request_num, pull_request|
+      if pull_request.new_record?
+        pull_request.save
       end
     end
 

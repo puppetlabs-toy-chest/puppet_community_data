@@ -1,6 +1,7 @@
 require 'puppet_community_data'
 require 'puppet_community_data/version'
 require 'puppet_community_data/repository'
+require 'puppet_community_data/pull_request'
 
 require 'octokit'
 require 'table_print'
@@ -62,20 +63,16 @@ module PuppetCommunityData
       pull_requests_by_num = Hash.new
 
       closed_pull_requests.each do |pr|
-        if (pr['merged_at'] != nil)
-          was_merged = true
-        else
-          was_merged = false
-        end
+        was_merged = !!(pr['merged_at'])
 
-        open_time = pr['created_at']
-        open_time = (Chronic.parse(open_time)).to_time
-        close_time = pr['closed_at']
-        close_time = (Chronic.parse(close_time)).to_time
-        pull_request_num = pr['number']
+        open_time = (Chronic.parse(pr['created_at'])).to_time
+        close_time = (Chronic.parse(pr['closed_at'])).to_time
         pull_request_ttl = ((close_time - open_time)/60).to_i
-        pull_requests_by_num[pull_request_num] = [pull_request_ttl, was_merged, repo.name, repo.owner]
-
+        pull_requests_by_num[pr['number']] = PullRequest.new(:pull_request_number => pr['number'],
+                                                             :repository_name => repo.name,
+                                                             :repository_owner => repo.owner,
+                                                             :lifetime_minutes => pull_request_ttl,
+                                                             :merged_status => was_merged)
       end
 
       return pull_requests_by_num

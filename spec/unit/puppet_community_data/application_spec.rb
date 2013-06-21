@@ -84,29 +84,9 @@ describe PuppetCommunityData::Application do
         end
 
         describe "values" do
-          it 'has values which are arrays' do
-            expect(subject.values[0]).to be_a_kind_of Array
+          it 'has values which are pull_requests' do
+            expect(subject.values[0]).to be_a_kind_of PullRequest
           end
-
-          it 'has two element arrays for values' do
-            expect(subject.values[0].length).to eq(4)
-          end
-
-          it 'has arrays for values which have an integer for the first element' do
-            expect(subject.values[0][0]).to be_a_kind_of Integer
-          end
-
-          it 'has arrays for values which have true or false for the second element' do
-            expect([TrueClass, FalseClass].any? {|bool| subject.values[0][1].class == bool}).to be_true
-          end
-
-          it 'has arrays for values which have a string for the third element' do
-            expect(subject.values[0][2]).to be_a_kind_of String
-          end
-        end
-
-        it 'has arrays for values which have a string for the forth element' do
-          expect(subject.values[0][3]).to be_a_kind_of String
         end
 
         it 'includes pull request 123' do

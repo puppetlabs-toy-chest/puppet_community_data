@@ -16,7 +16,9 @@ end
 RSpec.configure do |config|
   # config.mock_with :mocha
 
-  config.before :each do
+  config.before :all do
+    ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
+    ActiveRecord::Migrator.up "db/migrate"
   end
 
   config.after :each do

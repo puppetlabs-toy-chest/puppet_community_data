@@ -16,19 +16,23 @@ module PuppetCommunityData
     facter_pull_requests = @application.closed_pull_requests("puppetlabs/facter")
 
     hiera_pull_requests.each do |key, value|
-      pull_request = PullRequest.create(:pull_request_number => key,
-                                        :repository_name => value[2],
-                                        :repository_owner => value[3],
-                                        :lifetime_minutes => value[0],
-                                        :merged_status => value[1])
+      if !(PullRequest.exists?(:pull_request_number => key, :repository_name => value[2]))
+        pull_request = PullRequest.create(:pull_request_number => key,
+                                          :repository_name => value[2],
+                                          :repository_owner => value[3],
+                                          :lifetime_minutes => value[0],
+                                          :merged_status => value[1])
      end
+    end
 
     facter_pull_requests.each do |key, value|
-      pull_request = PullRequest.create(:pull_request_number => key,
-                                        :repository_name => value[2],
-                                        :repository_owner => value[3],
-                                        :lifetime_minutes => value[0],
-                                        :merged_status => value[1])
+      if !(PullRequest.exists?(:pull_request_number => key, :repository_name => value[2]))
+        pull_request = PullRequest.create(:pull_request_number => key,
+                                         :repository_name => value[2],
+                                          :repository_owner => value[3],
+                                          :lifetime_minutes => value[0],
+                                          :merged_status => value[1])
+      end
     end
 
     get '/' do

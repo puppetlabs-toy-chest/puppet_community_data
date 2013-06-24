@@ -15,6 +15,7 @@ module PuppetCommunityData
   class Application
 
     attr_reader :opts
+    attr_writer :repositories
 
     ##
     # Initialize a new application instance.  See the run method to run the
@@ -51,31 +52,19 @@ module PuppetCommunityData
       @github_api ||= Octokit::Client.new(:auto_traversal => true, :oauth_token => github_oauth_token)
     end
 
-    ##
-    # closed_pull_requests extracts specific information from all of the pull
-    # requests on Github.
-    #
-    # @param repo [Repostiory] The repository to obtain all pull requests from.
-    #
-    # @return [Hash] keyed by the pull request number with computed metrics.
-    def closed_pull_requests(repo)
-      closed_pull_requests = github_api.pull_requests(repo.full_name, 'closed')
-      pull_requests_by_num = Hash.new
-
-      closed_pull_requests.each do |pr|
-        was_merged = !!(pr['merged_at'])
-
-        open_time = (Chronic.parse(pr['created_at'])).to_time
-        close_time = (Chronic.parse(pr['closed_at'])).to_time
-        pull_request_ttl = ((close_time - open_time)/60).to_i
-        pull_requests_by_num[pr['number']] = PullRequest.new(:pull_request_number => pr['number'],
-                                                             :repository_name => repo.name,
-                                                             :repository_owner => repo.owner,
-                                                             :lifetime_minutes => pull_request_ttl,
-                                                             :merged_status => was_merged)
+    def generate_repositories(repo_names)
+      repos.each do |repo_name|
+        repository.push(Repository.new(repo_name))
       end
+    end
 
-      return pull_requests_by_num
+    def write_pull_request_to_database
+      repositories.each do |repo|
+        pull_requests = repo.closed_pull_requests(github_api)
+        closed_pull_requests.each do |pull_request|
+          pull_request.save_if_new
+        end
+      end
     end
 
     ##

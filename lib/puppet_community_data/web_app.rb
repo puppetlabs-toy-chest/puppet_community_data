@@ -15,16 +15,12 @@ module PuppetCommunityData
     hiera_pull_requests = @application.closed_pull_requests("puppetlabs/hiera")
     facter_pull_requests = @application.closed_pull_requests("puppetlabs/facter")
 
-    hiera_pull_requests.each do |pull_request_num, pull_request|
-      if pull_request.new_record?
-        pull_request.save
-      end
+    hiera_pull_requests.each do |pull_request|
+      pull_request.save_if_new
     end
 
-    facter_pull_requests.each do |pull_request_num, pull_request|
-      if pull_request.new_record?
-        pull_request.save
-      end
+    facter_pull_requests.each do |pull_request|
+      pull_request.save_if_new
     end
 
     get '/' do

@@ -75,22 +75,16 @@ describe PuppetCommunityData::Application do
           s.closed_pull_requests(repo)
         end
 
-        it 'returns a hash of closed pull requests' do
-          expect(subject).to be_a_kind_of Hash
+        it 'returns an array of pull requests' do
+          expect(subject).to be_a_kind_of Array
         end
 
-        it 'has integer keys for the pull request numbers' do
-          expect(subject.keys[0]).to be_a_kind_of Integer
-        end
-
-        describe "values" do
-          it 'has values which are pull_requests' do
-            expect(subject.values[0]).to be_a_kind_of PullRequest
-          end
+        it 'has values which are pull_requests' do
+          expect(subject[0]).to be_a_kind_of PullRequest
         end
 
         it 'includes pull request 123' do
-          expect(subject.keys).to include(123)
+          expect(subject.map(&:pull_request_number)).to include(123)
         end
       end
     end

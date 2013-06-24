@@ -1,3 +1,7 @@
+require 'puppet_community_data/pull_request'
+
+require 'chronic'
+
 module PuppetCommunityData
   class Repository
     attr_reader :owner, :name

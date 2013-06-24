@@ -4,11 +4,8 @@ require 'puppet_community_data/repository'
 require 'puppet_community_data/pull_request'
 
 require 'octokit'
-require 'table_print'
-require 'chronic'
 require 'json'
 require 'csv'
-require 'google_drive'
 require 'trollop'
 
 module PuppetCommunityData

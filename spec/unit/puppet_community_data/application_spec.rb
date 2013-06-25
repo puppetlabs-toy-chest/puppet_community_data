@@ -63,38 +63,40 @@ describe PuppetCommunityData::Application do
       end
     end
 
-    describe '#closed_pull_requests' do
-      context "Repository puppetlabs/puppetlabs-stdlib" do
-        let(:full_name) { "puppetlabs/puppetlabs-stdlib" }
-        let(:repo) { PuppetCommunityData::Repository.new(full_name) }
-
-        subject { described_class.new([]).closed_pull_requests(repo) }
-        subject do
-          s = described_class.new([])
-          s.github_api.stub(:pull_requests).with(full_name, 'closed').and_return(closed_puppet_pull_requests)
-          s.closed_pull_requests(repo)
-        end
-
-        it 'returns an array of pull requests' do
-          expect(subject).to be_a_kind_of Array
-        end
-
-        it 'has values which are pull_requests' do
-          expect(subject[0]).to be_a_kind_of PullRequest
-        end
-
-        it 'includes pull request 123' do
-          expect(subject.map(&:pull_request_number)).to include(123)
-        end
-      end
-    end
-
     describe '#pull_request_lifetimes' do
       let(:pull_requests) {{10 => [30, true, 'puppetlabs/puppet'], 11 => [5, false, 'puppetlabs/puppet']}}
       subject {described_class.new([]).pull_request_lifetimes(pull_requests)}
 
       it 'returns liftimes as an array of integers' do
         expect(subject).to eq([30,5])
+      end
+    end
+
+    describe '#generate repositories' do
+      let(:names) {['puppetlabs/puppet', 'puppetlabs/facter', 'puppetlabs/hiera']}
+      subject{described_class.new([])}
+
+      it "generates the correct number of repositories" do
+        subject.generate_repositories(names)
+        expect(subject.repositories.length).to eq(3)
+      end
+
+      it "generates the correct repository objects" do
+        subject.generate_repositories(names)
+        expect(subject.repositories[0].full_name).to eq('puppetlabs/puppet')
+      end
+    end
+
+    describe '#write_pull_requests_to_database' do
+      let(:repo) {PuppetCommunityData::Repository.new('puppetlabs/facter')}
+      subject{described_class.new([])}
+
+      it "collects the closed pull requests for that repostiory" do
+        pending
+      end
+
+      it "writes the collected pull requests" do
+        pending
       end
     end
 

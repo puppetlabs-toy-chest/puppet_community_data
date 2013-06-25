@@ -12,7 +12,7 @@ module PuppetCommunityData
   class Application
 
     attr_reader :opts
-    attr_writer :repositories
+    attr_accessor :repositories
 
     ##
     # Initialize a new application instance.  See the run method to run the
@@ -50,16 +50,22 @@ module PuppetCommunityData
     end
 
     def generate_repositories(repo_names)
-      repos.each do |repo_name|
-        repository.push(Repository.new(repo_name))
+      @repositories ||= Array.new
+
+      repo_names.each do |repo_name|
+        repositories.push(Repository.new(repo_name))
       end
     end
 
-    def write_pull_request_to_database
+    ##
+    #
+    def write_pull_requests_to_database(repo_names)
+      generate_repositories(repo_names)
+
       repositories.each do |repo|
         pull_requests = repo.closed_pull_requests(github_api)
-        closed_pull_requests.each do |pull_request|
-          pull_request.save_if_new
+        pull_requests.each do |pull_request|
+            pull_request.save_if_new
         end
       end
     end

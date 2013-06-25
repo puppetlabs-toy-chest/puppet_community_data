@@ -53,6 +53,8 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
     rake (10.0.4)
     redcarpet (2.3.0)
     rspec (2.13.0)
@@ -89,6 +91,7 @@ DEPENDENCIES
   pg
   pry
   puppet_community_data!
+  rack-test
   rake
   redcarpet
   rspec

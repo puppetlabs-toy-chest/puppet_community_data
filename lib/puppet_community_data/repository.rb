@@ -14,6 +14,10 @@ module PuppetCommunityData
       [@owner, @name].join('/')
     end
 
+    ##
+    # closed_pull_requests
+    #
+    #
     def closed_pull_requests(github_api)
       closed_pull_requests = github_api.pull_requests(full_name, 'closed')
 
@@ -26,7 +30,7 @@ module PuppetCommunityData
         PullRequest.new(:pull_request_number => pr['number'],
                         :repository_name => name,
                         :repository_owner => owner,
-                        :lifetime_minutes => pull_requests_ttl,
+                        :lifetime_minutes => pull_request_ttl,
                         :merged_status => was_merged)
       end
     end

@@ -12,16 +12,9 @@ module PuppetCommunityData
 
     @application = Application.new
 
-    hiera_pull_requests = @application.closed_pull_requests("puppetlabs/hiera")
-    facter_pull_requests = @application.closed_pull_requests("puppetlabs/facter")
+    repo_names = ['puppetlabs/puppet', 'puppetlabs/facter', 'puppetlabs/puppetlabs-stdlib', 'puppetlabs/hiera']
 
-    hiera_pull_requests.each do |pull_request|
-      pull_request.save_if_new
-    end
-
-    facter_pull_requests.each do |pull_request|
-      pull_request.save_if_new
-    end
+    @application.write_pull_requests_to_database(repo_names)
 
     get '/' do
       "Hello world! From #{self.class.inspect}"

@@ -11,12 +11,15 @@ group :production do
   gem 'thin'
 end
 
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
+  gem 'sqlite3'
+end
+
 gem 'pg'
 gem 'sinatra'
 gem 'sinatra-activerecord'
-gem 'sqlite3'
-
-gem 'rspec', :group => :test
 
 # Specify your gem's dependencies in puppet_community_data.gemspec
 gemspec

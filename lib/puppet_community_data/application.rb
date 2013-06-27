@@ -31,10 +31,6 @@ module PuppetCommunityData
     # run the application.
     def run
       parse_options!
-
-      pull_requests = closed_pull_requests("puppetlabs/hiera")
-      write_to_json("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.json", pull_requests)
-      write_to_csv("/Users/haileekenney/Projects/puppet_community_data/data/lifetimes.csv",pull_requests)
     end
 
     def version
@@ -49,6 +45,14 @@ module PuppetCommunityData
       @github_api ||= Octokit::Client.new(:auto_traversal => true, :oauth_token => github_oauth_token)
     end
 
+    ##
+    # Given an array of repository names, genearte_repositories
+    # will create a repository object for each one and add it to
+    # the instance variable @repositories
+    #
+    # @param [Array] repo_names is an array of strings which
+    # represent the names of the repositories to collect pull
+    # requests from
     def generate_repositories(repo_names)
       @repositories ||= Array.new
 
@@ -58,7 +62,15 @@ module PuppetCommunityData
     end
 
     ##
+    # Given an array of repository names as strings,
+    # write_pull_requests_to_database will generate repositry objects
+    # for each one. Then, it will get a collection of closed pull
+    # requests from that repository, and if they are not already in
+    # the database, it will add them.
     #
+    # @param [Array] repo_names is an array of strings which
+    # represent the names of the repositories we want to collect
+    # pull requests from
     def write_pull_requests_to_database(repo_names)
       generate_repositories(repo_names)
 
@@ -78,7 +90,6 @@ module PuppetCommunityData
     # @param [Hash] pull_requests Pull requests sorted by number
     #
     # @return [Array] of pull requests lifetimes as integers
-    #
     def pull_request_lifetimes(pull_requests)
       pull_request_lifetimes = Array.new
 

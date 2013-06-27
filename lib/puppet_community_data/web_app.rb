@@ -11,9 +11,7 @@ module PuppetCommunityData
     register Sinatra::ActiveRecordExtension
 
     @application = Application.new
-
     repo_names = ['puppetlabs/puppet', 'puppetlabs/facter', 'puppetlabs/puppetlabs-stdlib', 'puppetlabs/hiera']
-
     @application.write_pull_requests_to_database(repo_names)
 
     get '/' do

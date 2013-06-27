@@ -10,14 +10,26 @@ module PuppetCommunityData
       @owner, @name = repository.split('/')
     end
 
+    ##
+    # full_name returns the "full name" of the repository which is in the
+    # format of "owner/name"
+    #
+    # @ return [String] the full name of the repository in the correct
+    # format
     def full_name
       [@owner, @name].join('/')
     end
 
     ##
-    # closed_pull_requests
+    # Given a Octokit object, closed_pull_requests will generate a collection
+    # of pull request objects for all closed pull requests in a given
+    # repository
     #
+    # @param [Octokit] github_api is the instance of the GitHub API
+    # needed to read from the repository
     #
+    # @ return [Array] of pull request objects representing the pull requests
+    # for the given repository
     def closed_pull_requests(github_api)
       closed_pull_requests = github_api.pull_requests(full_name, 'closed')
 

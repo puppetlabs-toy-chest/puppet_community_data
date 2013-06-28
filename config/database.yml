@@ -6,3 +6,12 @@ production:
   pool: 5
   username:
   password:
+
+development:
+  adapter: postgresql
+  database: pull_requests
+  host: localhost
+  encoding: unicode
+  pool: 5
+  username:
+  password:

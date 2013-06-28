@@ -76,9 +76,9 @@ module PuppetCommunityData
 
       repositories.each do |repo|
         pull_requests = repo.closed_pull_requests(github_api)
-        pull_requests.each do |pull_request|
+          pull_requests.each do |pull_request|
             pull_request.save_if_new
-        end
+          end
       end
     end
 

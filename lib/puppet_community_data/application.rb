@@ -83,24 +83,6 @@ module PuppetCommunityData
     end
 
     ##
-    # Given a hash of pull requests as parsed by closed_pull_requests,
-    # pull_request_lifetimes will generate an array of integers which
-    # contains only the pull request lifetimes
-    #
-    # @param [Hash] pull_requests Pull requests sorted by number
-    #
-    # @return [Array] of pull requests lifetimes as integers
-    def pull_request_lifetimes(pull_requests)
-      pull_request_lifetimes = Array.new
-
-      pull_requests.each do |key, value|
-        pull_request_lifetimes.push(value[0])
-      end
-
-      return pull_request_lifetimes
-    end
-
-    ##
     # parse_options parses the command line arguments and sets the @opts
     # instance variable in the application instance.
     #

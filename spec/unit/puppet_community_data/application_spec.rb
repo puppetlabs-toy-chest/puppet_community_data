@@ -63,15 +63,6 @@ describe PuppetCommunityData::Application do
       end
     end
 
-    describe '#pull_request_lifetimes' do
-      let(:pull_requests) {{10 => [30, true, 'puppetlabs/puppet'], 11 => [5, false, 'puppetlabs/puppet']}}
-      subject {described_class.new([]).pull_request_lifetimes(pull_requests)}
-
-      it 'returns liftimes as an array of integers' do
-        expect(subject).to eq([30,5])
-      end
-    end
-
     describe '#generate repositories' do
       let(:names) {['puppetlabs/puppet', 'puppetlabs/facter', 'puppetlabs/hiera']}
       subject{described_class.new([])}

@@ -25,6 +25,7 @@ module PuppetCommunityData
       @argv = argv
       @env  = env
       @opts = {}
+      parse_options!
     end
 
     ##
@@ -77,6 +78,13 @@ module PuppetCommunityData
       repositories.each do |repo|
         pull_requests = repo.closed_pull_requests(github_api)
           pull_requests.each do |pull_request|
+            require 'pry'; binding.pry
+            PullRequest.new(:pull_request_number => pr['number'],
+                            :repository_name => name,
+                            :repository_owner => owner,
+                            :merged_status => was_merged,
+                            :time_opened => open_time,
+                            :time_closed => close_time)
             pull_request.save_if_new
           end
       end

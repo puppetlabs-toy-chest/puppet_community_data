@@ -3,6 +3,7 @@ require 'yaml'
 require 'erb'
 require 'logger'
 require 'sinatra/activerecord/rake'
+require 'puppet_community_data/application'
 
 require "bundler/gem_tasks"
 
@@ -32,4 +33,15 @@ end
 namespace :db do
   # This will use the migration as implemented in ActiveRecordTasks
   task :migrate => :environment
+  task :rollback => :environment
+end
+
+namespace :job do
+  desc "Import pull requests into the DB"
+  task :import => :environment do |t|
+    app = PuppetCommunityData::Application.new
+    repo_names = ['puppetlabs/hiera','puppetlabs/puppetlabs-stdlib','puppetlabs/facter','puppetlabs/puppet']
+    app.write_pull_requests_to_database(repo_names)
+    "Wrote to database!"
+  end
 end

@@ -37,10 +37,7 @@ module PuppetCommunityData
         was_merged = !!(pr['merged_at'])
         open_time = (Chronic.parse(pr['created_at'])).to_time
         close_time = (Chronic.parse(pr['closed_at'])).to_time
-        PullRequest.new(:pull_request_number => pr['number'],
-                        :repository_name => name,
-                        :repository_owner => owner,
-                        :merged_status => was_merged)
+        # FIXME This should probably be moved out.
       end
     end
   end

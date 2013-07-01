@@ -19,8 +19,9 @@ ActiveRecord::Schema.define(version: 20130618223721) do
     t.integer "pull_request_number"
     t.string  "repository_name"
     t.string  "repository_owner"
-    t.integer "lifetime_minutes"
     t.boolean "merged_status"
+    t.date    "time_opened"
+    t.date    "time_closed"
   end
 
 end

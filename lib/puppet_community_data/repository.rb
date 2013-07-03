@@ -28,7 +28,7 @@ module PuppetCommunityData
     # @param [Octokit] github_api is the instance of the GitHub API
     # needed to read from the repository
     #
-    # @ return [Array] of pull request objects representing the pull requests
+    # @ return [Array] of hashes containting data that  represents the pull requests
     # for the given repository
     def closed_pull_requests(github_api)
       closed_pull_requests = github_api.pull_requests(full_name, 'closed')
@@ -37,7 +37,12 @@ module PuppetCommunityData
         was_merged = !!(pr['merged_at'])
         open_time = (Chronic.parse(pr['created_at'])).to_time
         close_time = (Chronic.parse(pr['closed_at'])).to_time
-        # FIXME This should probably be moved out.
+        Hash["pr_number" => pr['number'],
+             "repo_name" => name,
+             "repo_owner" => owner,
+             "merge_status" => was_merged,
+             "time_closed" => close_time,
+             "time_opened" => open_time]
       end
     end
   end

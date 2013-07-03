@@ -25,13 +25,19 @@ module PuppetCommunityData
       @argv = argv
       @env  = env
       @opts = {}
-      parse_options!
+    end
+
+    def setup_environment
+      unless @environment_setup
+        parse_options!
+        @environment_setup = true
+      end
     end
 
     ##
     # run the application.
     def run
-      parse_options!
+      setup_environment
     end
 
     def version
@@ -73,20 +79,14 @@ module PuppetCommunityData
     # represent the names of the repositories we want to collect
     # pull requests from
     def write_pull_requests_to_database(repo_names)
+      setup_environment
       generate_repositories(repo_names)
 
       repositories.each do |repo|
         pull_requests = repo.closed_pull_requests(github_api)
-          pull_requests.each do |pull_request|
-            require 'pry'; binding.pry
-            PullRequest.new(:pull_request_number => pr['number'],
-                            :repository_name => name,
-                            :repository_owner => owner,
-                            :merged_status => was_merged,
-                            :time_opened => open_time,
-                            :time_closed => close_time)
-            pull_request.save_if_new
-          end
+        pull_requests.each do |pull_request|
+          PullRequest.from_github(pull_request)
+        end
       end
     end
 

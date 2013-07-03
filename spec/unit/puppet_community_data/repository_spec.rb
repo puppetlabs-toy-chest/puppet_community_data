@@ -52,12 +52,8 @@ describe PuppetCommunityData::Repository do
         expect(subject).to be_a_kind_of Array
       end
 
-      it 'has values which are pull_requests' do
-        expect(subject[0]).to be_a_kind_of PullRequest
-      end
-
-      it 'includes pull request 123' do
-        expect(subject.map(&:pull_request_number)).to include(123)
+      it 'the pull requests are represnted as Hashes of data' do
+        expect(subject[0]).to be_a_kind_of Hash
       end
     end
   end

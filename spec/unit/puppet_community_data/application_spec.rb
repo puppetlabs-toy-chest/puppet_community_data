@@ -22,8 +22,7 @@ describe PuppetCommunityData::Application do
   end
 
   describe "arguments" do
-    let(:argv) do ['--github-oauth-token', '1234token']
-    end
+    let(:argv) { ['--github-oauth-token', '1234token'] }
 
     subject do
       PuppetCommunityData::Application.new(argv)

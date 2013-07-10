@@ -78,8 +78,13 @@ describe PuppetCommunityData::Application do
     end
 
     describe '#write_pull_requests_to_database' do
-      let(:repo) {PuppetCommunityData::Repository.new('puppetlabs/facter')}
-      subject{described_class.new([])}
+      let(:full_name) { "puppetlabs/puppetlabs-stdlib" }
+      let(:repo) { PuppetCommunityData::Repository.new(full_name) }
+      let(:github) { PuppetCommunityData::Application.new([]).github_api }
+
+      it "generates the repositories" do
+        pending
+      end
 
       it "collects the closed pull requests for that repostiory" do
         pending

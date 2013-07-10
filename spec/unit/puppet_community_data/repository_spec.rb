@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'puppet_community_data/repository'
+require 'puppet_community_data/application'
 
 describe PuppetCommunityData::Repository do
 
@@ -54,6 +55,30 @@ describe PuppetCommunityData::Repository do
 
       it 'the pull requests are represnted as Hashes of data' do
         expect(subject[0]).to be_a_kind_of Hash
+      end
+
+      it 'stores the correct pull request number' do
+        expect(subject[0]["pr_number"]).to eq(159)
+      end
+
+      it 'stores the correct repository name' do
+        expect(subject[0]["repo_name"]).to eq('puppetlabs-stdlib')
+      end
+
+      it 'stores the correct repository owner' do
+        expect(subject[0]["repo_owner"]).to eq('puppetlabs')
+      end
+
+      it 'stores the correct merge status' do
+        expect(subject[0]["merge_status"]).to eq(true)
+      end
+
+      it 'stores the correct open time' do
+        expect(subject[0]["time_opened"]).to eq(Chronic.parse('2013-05-24T15:35:00Z').to_time)
+      end
+
+      it 'stores the correct open time' do
+        expect(subject[0]["time_closed"]).to eq(Chronic.parse('2013-05-24T16:40:51Z').to_time)
       end
     end
   end

@@ -79,19 +79,30 @@ describe PuppetCommunityData::Application do
 
     describe '#write_pull_requests_to_database' do
       let(:full_name) { "puppetlabs/puppetlabs-stdlib" }
-      let(:repo) { PuppetCommunityData::Repository.new(full_name) }
-      let(:github) { PuppetCommunityData::Application.new([]).github_api }
 
-      it "generates the repositories" do
-        pending
+      let(:closed_pr_data) do
+        Hash["pr_number" => 1234,
+             "repo_name" => 'puppet-stdlib',
+             "repo_owner" => 'puppetlabs',
+             "merge_status" => false,
+             "time_closed" => Time.now,
+             "time_opened" => Time.now - 3600]
       end
 
-      it "collects the closed pull requests for that repostiory" do
-        pending
+      let(:repo) do
+        repo = PuppetCommunityData::Repository.new(full_name)
+        repo.stub(:closed_pull_requests).and_return([closed_pr_data])
+        repo
       end
 
-      it "writes the collected pull requests" do
-        pending
+      before :each do
+        subject.stub(:github_api)
+        subject.stub(:repositories).and_return([repo])
+      end
+
+      it "writes the pull request to the database" do
+        subject.write_pull_requests_to_database
+        expect(PullRequest.where({:pull_request_number => 1234})).to_not be_empty
       end
     end
 

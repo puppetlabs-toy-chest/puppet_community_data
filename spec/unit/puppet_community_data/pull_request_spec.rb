@@ -15,13 +15,14 @@ describe PullRequest do
                          "merge_status" => true,
                          "time_closed" => close_time,
                          "time_opened" => open_time]}
+
     it "writes the pull request if it is new" do
       PullRequest.from_github(pr_hash)
       expect(PullRequest.exists?(:pull_request_number => 20,
                                  :repository_name => 'facter',
                                  :repository_owner => 'puppetlabs')).to be_true
-      PullRequest.delete(1)
     end
+
     it "doesn't write the pull request if it isn't new" do
       PullRequest.create(:pull_request_number => 20,
                          :repository_name => 'facter',

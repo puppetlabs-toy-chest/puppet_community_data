@@ -39,9 +39,12 @@ end
 namespace :job do
   desc "Import pull requests into the DB"
   task :import => :environment do |t|
-    app = PuppetCommunityData::Application.new
     repo_names = ['puppetlabs/hiera','puppetlabs/puppetlabs-stdlib','puppetlabs/facter','puppetlabs/puppet']
-    app.write_pull_requests_to_database(repo_names)
+
+    app = PuppetCommunityData::Application.new
+    app.setup_environment
+    app.generate_repositories(repo_names)
+    app.write_pull_requests_to_database
     "Wrote to database!"
   end
 end

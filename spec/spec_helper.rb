@@ -17,10 +17,13 @@ RSpec.configure do |config|
   # config.mock_with :mocha
 
   config.before :all do
-    ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
-    ActiveRecord::Migrator.up "db/migrate"
+    # ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + '/active_record.log')
+    # ActiveRecord::Base.logger.level = 1
+    ActiveRecord::Migration.verbose = false
   end
 
-  config.after :each do
+  config.before :each do
+    ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
+    ActiveRecord::Migrator.up "db/migrate"
   end
 end

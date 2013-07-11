@@ -74,14 +74,7 @@ module PuppetCommunityData
     # for each one. Then, it will get a collection of closed pull
     # requests from that repository, and if they are not already in
     # the database, it will add them.
-    #
-    # @param [Array] repo_names is an array of strings which
-    # represent the names of the repositories we want to collect
-    # pull requests from
-    def write_pull_requests_to_database(repo_names)
-      setup_environment
-      generate_repositories(repo_names)
-
+    def write_pull_requests_to_database
       repositories.each do |repo|
         pull_requests = repo.closed_pull_requests(github_api)
         pull_requests.each do |pull_request|

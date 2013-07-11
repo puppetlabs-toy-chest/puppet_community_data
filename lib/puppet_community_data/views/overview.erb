@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <th>Repository Owner</th>
+    <th>Repository Name</th>
+    <th>Pull Request Number</th>
+    <th>Merged Status</th>
+    <th>Time Opened</th>
+    <th>Time Closed</th>
+  </thead>
+  <tbody>
+    <% @facter_pulls.each do |pull| %>
+      <tr>
+        <td><%= pull.repository_owner %></td>
+        <td><%= pull.repository_name %></td>
+        <td><%= pull.pull_request_number %></td>
+        <td><%= pull.merged_status %></td>
+        <td><%= pull.time_opened %></td>
+        <td><%= pull.time_closed %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

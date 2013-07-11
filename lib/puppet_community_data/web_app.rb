@@ -14,6 +14,11 @@ module PuppetCommunityData
       "Wrote to database!"
     end
 
+    get '/overview' do
+      @facter_pulls = PullRequest.find_by_sql("select * from pull_requests where repository_name='facter'")
+      erb :overview
+    end
+
     get '/' do
       "Hello world! From #{self.class.inspect}"
     end

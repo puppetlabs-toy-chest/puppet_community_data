@@ -45,6 +45,5 @@ namespace :job do
     app.setup_environment
     app.generate_repositories(repo_names)
     app.write_pull_requests_to_database
-    "Wrote to database!"
   end
 end

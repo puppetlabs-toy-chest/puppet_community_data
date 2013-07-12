@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130618223721) do
+ActiveRecord::Schema.define(version: 20130712170713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "pull_requests", force: true do |t|
-    t.integer "pull_request_number"
-    t.string  "repository_name"
-    t.string  "repository_owner"
-    t.boolean "merged_status"
-    t.date    "time_opened"
-    t.date    "time_closed"
+    t.integer  "pull_request_number"
+    t.string   "repository_name"
+    t.string   "repository_owner"
+    t.boolean  "merged_status"
+    t.datetime "time_opened"
+    t.datetime "time_closed"
   end
 
 end

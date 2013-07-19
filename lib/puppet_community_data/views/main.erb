@@ -21,85 +21,43 @@
         }
   </style>
   <script src="js/d3.v3/d3.v3.js"></script>
+  <script src ="js/crossfilter-1.2.0/crossfilter.min.js"></script>
+  <script src="js/dc.js-1.4.0/dc.js"></script>
+  <link type="text/css" rel="stylesheet" href="css/dc.css"/>
 </head>
   <script type="text/javascript">
       d3.json('/data/puppetlabs/pull_request', function(dataset) {
-      var margin = {top: 40, right: 20, bottom: 30, left: 40},
-      w = 600 - margin.left - margin.right,
-      h = 300 - margin.top - margin.bottom;
+          var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
+          var labelFormat = d3.time.format.utc('%b');
 
-      var xScale = d3.scale.ordinal()
-                     .domain(d3.range(dataset.length))
-                     .rangeRoundBands([0, w], 0.05);
+          dataset = dataset.map(function(d){
+            return {'time': d3.time.month(dateFormat.parse(d))};
+          });
 
-      var yScale = d3.scale.linear()
-                     .domain([0, d3.max(dataset)])
-                     .range([0, h]);
+          time_domain = d3.extent(dataset, function(d){return d.time;});
 
-      var xAxis = d3.svg.axis()
-                    .scale(xScale)
-                    .orient("bottom");
+          var pull_requests = crossfilter(dataset);
+          var all = pull_requests.groupAll();
 
-      var yAxis = d3.svg.axis()
-                    .scale(yScale)
-                    .orient("left");
+          var timeDimension = pull_requests.dimension(function(d){return d.time;});
+          var timeGroup = timeDimension.group().reduceCount().orderNatural();
 
-      var svg = d3.select("body")
-                  .append("svg")
-                  .attr('id', 'barGraph')
-                  .attr("width", w)
-                  .attr("height", h);
+          var chart = dc.barChart("#bar-chart")
+            .width(900)
+            .height(250)
+            .gap(2)
+            .dimension(timeDimension)
+            .group(timeGroup)
+            .centerBar(true)
+            .x(d3.time.scale().domain(time_domain))
+            .xUnits(d3.time.months);
 
-      svg.selectAll("rect")
-         .data(dataset)
-         .enter()
-         .append("rect")
-         .attr("x", function(d, i) {
-              return xScale(i);
-             })
-         .attr("y", function(d) {
-              return h - yScale(d);
-         })
-         .attr("width", xScale.rangeBand())
-         .attr("height", function(d) {
-               return yScale(d) -20;
-             })
-         .attr("fill", function(d) {
-             return "rgb( " + (d * 5) + ", 0, " + (d * 10) + ")";
-             });
+        chart.xAxis().ticks(d3.time.months, 2);
 
-      svg.selectAll("text")
-         .data(dataset)
-         .enter()
-         .append("text")
-         .text(function (d) {
-             return d;
-             })
-         .attr("x", function(d,i) {
-             return xScale(i) + xScale.rangeBand() / 4;
-             })
-         .attr("y", function(d) {
-             return h - yScale(d) + 14;
-             })
-         .attr("font-family", "sans-serif")
-         .attr("font-size", "11px")
-         .attr("fill", "white");
+        dc.renderAll();
 
-         svg.append("g")
-         .attr('stroke-width', '1px')
-         .attr("class", "axis")
-         .attr("transform", "translate(0, " + (h - 20) + ")")
-         .call(xAxis);
-
-     svg.append("g")
-        .attr("class", "axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Pull Requests Merged");
       });
    </script>
+
+   <div id='bar-chart'></div>
 </body>

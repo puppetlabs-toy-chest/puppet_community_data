@@ -21,10 +21,11 @@ module PuppetCommunityData
 
     get '/data/:repo/pull_request' do
       puppet_pulls = PullRequest.where(:repository_owner => params[:repo])
-      puppet_pulls = puppet_pulls.sort_by &:time_closed
-      puppet_pulls.to_json
-      [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-        11, 12, 15, 20, 18, 17, 16, 18, 23, 25].to_json
+      pr_dates = Array.new
+      puppet_pulls.each do |pr|
+        pr_dates.push(pr.time_closed)
+      end
+      pr_dates.to_json
     end
   end
 end

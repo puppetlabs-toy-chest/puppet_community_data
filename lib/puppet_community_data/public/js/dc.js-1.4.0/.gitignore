@@ -1,0 +1,19 @@
+# tmp files
+*.log
+*~
+
+# local files
+node_modules
+
+# ide files
+*.iml
+.idea
+
+# vim files
+.*.swp
+
+# mac
+.DS_Store
+
+# ctag
+.tags

@@ -26,13 +26,13 @@
   <link type="text/css" rel="stylesheet" href="css/dc.css"/>
 </head>
   <script type="text/javascript">
-      d3.json('/data/puppetlabs/pull_request', function(dataset) {
+      d3.json('/data/puppet_pulls', function(dataset) {
           var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
-          var labelFormat = d3.time.format.utc('%b');
 
           dataset = dataset.map(function(d){
-            return {'time': d3.time.month(dateFormat.parse(d))};
-          });
+            return {'time': d3.time.month(dateFormat.parse(d.close_time)),
+            'repo': d.repo_name};
+            });
 
           time_domain = d3.extent(dataset, function(d){return d.time;});
 
@@ -42,7 +42,10 @@
           var timeDimension = pull_requests.dimension(function(d){return d.time;});
           var timeGroup = timeDimension.group().reduceCount().orderNatural();
 
-          var chart = dc.barChart("#bar-chart")
+          var repoDimension = pull_requests.dimension(function(d){return d.repo;});
+          var repoGroup = repoDimension.group().reduceCount().orderNatural();
+
+          var chart = dc.barChart("#per-month")
             .width(900)
             .height(250)
             .gap(2)
@@ -52,12 +55,22 @@
             .x(d3.time.scale().domain(time_domain))
             .xUnits(d3.time.months);
 
-        chart.xAxis().ticks(d3.time.months, 2);
+          chart.xAxis().ticks(d3.time.months, 2)
+                       .tickFormat(d3.time.format("%b %Y"));
 
-        dc.renderAll();
+          var repoChart = dc.rowChart("#repo-names")
+            .width(300)
+            .height(180)
+            .group(repoGroup)
+            .dimension(repoDimension)
+            .colors(['#6600FF', '#934BFF', '#AF7AFF', '#DAC2FF']);
 
+          repoChart.xAxis().ticks(5);
+
+          dc.renderAll();
       });
    </script>
 
-   <div id='bar-chart'></div>
+   <div id='per-month'></div>
+   <div id='repo-names'></div>
 </body>

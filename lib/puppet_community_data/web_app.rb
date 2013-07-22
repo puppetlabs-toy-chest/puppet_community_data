@@ -19,13 +19,14 @@ module PuppetCommunityData
       erb :main
     end
 
-    get '/data/:repo/pull_request' do
-      puppet_pulls = PullRequest.where(:repository_owner => params[:repo])
-      pr_dates = Array.new
+    get '/data/puppet_pulls' do
+      puppet_pulls = PullRequest.where(:repository_owner => 'puppetlabs')
+      pull_requests = Array.new
       puppet_pulls.each do |pr|
-        pr_dates.push(pr.time_closed)
+        pull_requests.push(Hash["close_time" => pr.time_closed,
+                                "repo_name" => pr.repository_name])
       end
-      pr_dates.to_json
+      pull_requests.to_json
     end
   end
 end

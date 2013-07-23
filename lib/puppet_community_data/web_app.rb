@@ -24,7 +24,9 @@ module PuppetCommunityData
       pull_requests = Array.new
       puppet_pulls.each do |pr|
         pull_requests.push(Hash["close_time" => pr.time_closed,
-                                "repo_name" => pr.repository_name])
+                                "repo_name" => pr.repository_name,
+                                "ttl" => ((pr.time_closed - pr.time_opened)/86400).to_i,
+                                "merged?" => pr.merged_status])
       end
       pull_requests.to_json
     end

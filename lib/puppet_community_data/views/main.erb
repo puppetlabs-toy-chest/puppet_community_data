@@ -1,29 +1,17 @@
 <head>
   <meta charset="utf-8">
   <title>Puppet Pull Request Metrics</title>
+  <link type="text/css" rel="stylesheet" href="css/dc.css"/>
   <style type = "text/css">
-
-      #barGraph {
-        margin-left: 10px;
+    div#per-week{
+      .dc-chart rect.bar{
+        fill: #7D64AC;
       }
-
-      .axis path,
-      .axis line {
-            fill: none;
-            stroke: black;
-            stroke-width: 1px;
-            shape-rendering: crispEdges;
-         }
-
-      .axis text {
-        font-family: sans-serif;
-        font-size: 11px;
-        }
+    }
   </style>
   <script src="js/d3.v3/d3.v3.js"></script>
   <script src ="js/crossfilter-1.2.0/crossfilter.min.js"></script>
   <script src="js/dc.js-1.4.0/dc.js"></script>
-  <link type="text/css" rel="stylesheet" href="css/dc.css"/>
 </head>
   <script type="text/javascript">
       d3.json('/data/puppet_pulls', function(dataset) {
@@ -31,10 +19,14 @@
 
           dataset = dataset.map(function(d){
             return {'time': d3.time.month(dateFormat.parse(d.close_time)),
-            'repo': d.repo_name};
-            });
+                    'repo': d.repo_name,
+                    'ttl': d.ttl,
+                    'week': d3.time.week(dateFormat.parse(d.close_time))};
+                   });
 
           time_domain = d3.extent(dataset, function(d){return d.time;});
+
+          week_domain = d3.extent(dataset, function(d){return d.week;});
 
           var pull_requests = crossfilter(dataset);
           var all = pull_requests.groupAll();
@@ -44,6 +36,27 @@
 
           var repoDimension = pull_requests.dimension(function(d){return d.repo;});
           var repoGroup = repoDimension.group().reduceCount().orderNatural();
+
+          var weekDimension = pull_requests.dimension(function(d){return d.week;});
+          var weekGroup = weekDimension.group().reduceCount().orderNatural();
+
+
+          var lifetimeGroup = timeDimension.group().reduce(
+            function(p,v){
+              ++p.count;
+              p.sum_ttl += v.ttl;
+              p.avg = p.sum_ttl / p.count;
+              return p;
+            },
+            function(p,v){
+              --p.count;p.sum_ttl -= v.ttl;
+              p.avg = p.sum_ttl / p.count;
+              return p;
+            },
+            function(){
+            return {count: 0, sum_ttl: 0, avg: 0};
+             }
+            );
 
           var chart = dc.barChart("#per-month")
             .width(900)
@@ -58,14 +71,38 @@
           chart.xAxis().ticks(d3.time.months, 2)
                        .tickFormat(d3.time.format("%b %Y"));
 
+          var weekChart = dc.barChart("#per-week")
+            .width(900)
+            .height(250)
+            .gap(2)
+            .dimension(weekDimension)
+            .group(weekGroup)
+            .centerBar(true)
+            .x(d3.time.scale().domain(week_domain))
+            .xUnits(d3.time.weeks);
+
           var repoChart = dc.rowChart("#repo-names")
             .width(300)
             .height(180)
             .group(repoGroup)
             .dimension(repoDimension)
-            .colors(['#6600FF', '#934BFF', '#AF7AFF', '#DAC2FF']);
+            .colors(['#501FAC', '#6742AC', '#7D64AC', '#9487AC']);
 
           repoChart.xAxis().ticks(5);
+
+          var lifetimes = dc.lineChart("#lifetimes")
+            .width(900)
+            .height(250)
+            .dimension(timeDimension)
+            .group(lifetimeGroup)
+            .x(d3.time.scale().domain(time_domain))
+            .xUnits(d3.time.months)
+            .renderArea(true);
+
+            lifetimes.xAxis().ticks(d3.time.months, 2)
+                             .tickFormat(d3.time.format("%b %Y"));
+
+            lifetimes.valueAccessor(function(p) { return p.value.avg; });
 
           dc.renderAll();
       });
@@ -73,4 +110,6 @@
 
    <div id='per-month'></div>
    <div id='repo-names'></div>
+   <div id='lifetimes'></div>
+   <div id='per-week'></div>
 </body>

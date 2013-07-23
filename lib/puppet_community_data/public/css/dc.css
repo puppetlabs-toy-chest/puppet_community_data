@@ -4,7 +4,7 @@
 
 .dc-chart rect.bar {
     stroke: none;
-    fill: #663399;
+    fill: #2B2767;
     cursor: pointer;
 }
 
@@ -94,7 +94,7 @@
 
 .dc-chart path.line {
     fill: none;
-    stroke: steelblue;
+    stroke: #F1A82F;
     stroke-width: 1.5px;
 }
 
@@ -125,7 +125,7 @@
 }
 
 .dc-chart path.area {
-    fill: steelblue;
+    fill: #F1A82F;
     fill-opacity: .3;
     stroke: none;
 }

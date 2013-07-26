@@ -28,6 +28,7 @@ module PuppetCommunityData
                                 "ttl" => ((pr.time_closed - pr.time_opened)/86400).to_i,
                                 "merged?" => pr.merged_status])
       end
+
       pull_requests.to_json
     end
   end

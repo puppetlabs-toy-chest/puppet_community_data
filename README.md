@@ -1,20 +1,20 @@
-### PuppetCommunityData
+## PuppetCommunityData
 
 The goal of this project is to create a dashboard to monitor how Puppet Labs is doing responding to pull requests and the general state of the open source repositories.
 
 The application is currently being hosted in Heroku and is viewable [here](http://pullrequestmetrics.herokuapp.com/).
 
-## Usage
+# Usage
 
 As mentioned, this application is hosted in [Heroku](https://devcenter.heroku.com/articles/ruby) and the data is stored in a [Heroku PostgreSQL](https://postgres.heroku.com/) database. Therefor, you will  need your own Heroku login in order to host the application. 
 
 This project uses Bundler as it is required for Heroku. To install the needed gems simply do:
 
-  $ bundle install
+    $ bundle install
 
 To populate the database with new information, run:
 
-  $ heroku run bundle exec rake job:import
+    $ heroku run bundle exec rake job:import
 
 Since the application is using the GitHub API, it's important to set your authorization token, otherwise GitHub will
 greatly limit how much data you can get at a time. The `application.rb` is responsible for creating the GitHub client. It will look for your authorization token to be

@@ -90,7 +90,6 @@ module PuppetCommunityData
     # @return [Hash] options hash
     def parse_options!
       env = @env
-
       @opts = Trollop.options(@argv) do
         version "Puppet Community Data #{version} (c) 2013 Puppet Labs"
         banner "---"

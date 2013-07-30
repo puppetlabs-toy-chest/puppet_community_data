@@ -20,6 +20,7 @@ class PullRequest < ActiveRecord::Base
       pr.merged_status = pr_data["merge_status"]
       pr.time_closed = pr_data["time_closed"]
       pr.time_opened = pr_data["time_opened"]
+      pr.from_community = pr_data["from_community"]
     end
     model
   end

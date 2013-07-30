@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130712170713) do
+ActiveRecord::Schema.define(version: 20130730220801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20130712170713) do
     t.boolean  "merged_status"
     t.datetime "time_opened"
     t.datetime "time_closed"
+    t.boolean  "from_community"
   end
 
 end

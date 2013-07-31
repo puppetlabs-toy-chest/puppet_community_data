@@ -33,8 +33,9 @@ module PuppetCommunityData
     # for the given repository
     def closed_pull_requests(github_api)
       closed_pull_requests = github_api.pull_requests(full_name, 'closed')
-
+      skip_next = false
       closed_pull_requests.collect do |pr|
+
         was_merged = !!(pr['merged_at'])
         open_time = (Chronic.parse(pr['created_at'])).to_time
         close_time = (Chronic.parse(pr['closed_at'])).to_time

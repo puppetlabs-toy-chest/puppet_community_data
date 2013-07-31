@@ -21,7 +21,9 @@
             return {'time': d3.time.month(dateFormat.parse(d.close_time)),
                     'repo': d.repo_name,
                     'ttl': d.ttl,
-                    'week': d3.time.week(dateFormat.parse(d.close_time))};
+                    'week': d3.time.week(dateFormat.parse(d.close_time)),
+                    'community': d.community,
+                    'merged': d.merged};
                    });
 
           time_domain = d3.extent(dataset, function(d){return d.time;});
@@ -39,6 +41,12 @@
 
           var weekDimension = pull_requests.dimension(function(d){return d.week;});
           var weekGroup = weekDimension.group().reduceCount().orderNatural();
+
+          var communityDimension = pull_requests.dimension(function(d){return d.community;});
+          var communityGroup = communityDimension.group().reduceCount().orderNatural();
+
+          var mergeDimension = pull_requests.dimension(function(d){return d.merged;});
+          var mergeGroup = mergeDimension.group().reduceCount().orderNatural();
 
 
           var lifetimeGroup = timeDimension.group().reduce(
@@ -71,6 +79,22 @@
           chart.xAxis().ticks(d3.time.months, 2)
                        .tickFormat(d3.time.format("%b %Y"));
 
+          var commChart = dc.pieChart('#community')
+            .width(300)
+            .height(300)
+            .radius(100)
+            .dimension(communityDimension)
+            .group(communityGroup)
+            .colors(['#F1A82F', '#F1CD91']);
+
+          var mergeChart = dc.pieChart('#merged')
+            .width(300)
+            .height(300)
+            .radius(100)
+            .dimension(mergeDimension)
+            .group(mergeGroup)
+            .colors(['#7D64AC', '#501FAC']);
+
           var weekChart = dc.barChart("#per-week")
             .width(900)
             .height(250)
@@ -81,9 +105,12 @@
             .x(d3.time.scale().domain(week_domain))
             .xUnits(d3.time.weeks);
 
+          weekChart.xAxis().ticks(d3.time.weeks, 6)
+                       .tickFormat(d3.time.format("%m/%y"));
+
           var repoChart = dc.rowChart("#repo-names")
-            .width(300)
-            .height(180)
+            .width(400)
+            .height(200)
             .group(repoGroup)
             .dimension(repoDimension)
             .colors(['#501FAC', '#6742AC', '#7D64AC', '#9487AC']);
@@ -111,5 +138,7 @@
    <div id='per-month'></div>
    <div id='repo-names'></div>
    <div id='lifetimes'></div>
+   <div id='merged'></div>
    <div id='per-week'></div>
+   <div id='community'></div>
 </body>

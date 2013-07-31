@@ -23,10 +23,18 @@ module PuppetCommunityData
       puppet_pulls = PullRequest.where(:repository_owner => 'puppetlabs')
       pull_requests = Array.new
       puppet_pulls.each do |pr|
+
+        from_community = "Puppet Labs"
+        from_community = "Community" if pr.from_community
+
+        merged = "Closed"
+        merged = "Merged" if pr.merged_status
+
         pull_requests.push(Hash["close_time" => pr.time_closed,
                                 "repo_name" => pr.repository_name,
                                 "ttl" => ((pr.time_closed - pr.time_opened)/86400).to_i,
-                                "merged?" => pr.merged_status])
+                                "merged" => merged,
+                                "community" => from_community])
       end
 
       pull_requests.to_json

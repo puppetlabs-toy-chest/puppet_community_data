@@ -243,3 +243,19 @@
     user-select: none;
     pointer-events: none;
 }
+
+.graphTitleLeft {
+  margin: 0px 0px 0px 60px;
+  width: 50%;
+  height: 20%;
+}
+
+.graphTitleRight {
+  margin: 0px 0px 0px 20px;
+  width: 50%;
+  height: 20%;
+}
+
+.community {
+  margin: 0px, 20px, 0px, 0px;
+}

@@ -2,13 +2,6 @@
   <meta charset="utf-8">
   <title>Puppet Pull Request Metrics</title>
   <link type="text/css" rel="stylesheet" href="css/dc.css"/>
-  <style type = "text/css">
-    div#per-week{
-      .dc-chart rect.bar{
-        fill: #7D64AC;
-      }
-    }
-  </style>
   <script src="js/d3.v3/d3.v3.js"></script>
   <script src ="js/crossfilter-1.2.0/crossfilter.min.js"></script>
   <script src="js/dc.js-1.4.0/dc.js"></script>
@@ -74,7 +67,9 @@
             .group(timeGroup)
             .centerBar(true)
             .x(d3.time.scale().domain(time_domain))
-            .xUnits(d3.time.months);
+            .xUnits(d3.time.months)
+            .margins({top: 10, right: 50, bottom: 30, left: 60})
+            .elasticY(true);
 
           chart.xAxis().ticks(d3.time.months, 2)
                        .tickFormat(d3.time.format("%b %Y"));
@@ -103,7 +98,9 @@
             .group(weekGroup)
             .centerBar(true)
             .x(d3.time.scale().domain(week_domain))
-            .xUnits(d3.time.weeks);
+            .xUnits(d3.time.weeks)
+            .margins({top: 10, right: 10, bottom: 30, left: 60})
+            .elasticY(true);
 
           weekChart.xAxis().ticks(d3.time.weeks, 6)
                        .tickFormat(d3.time.format("%m/%y"));
@@ -124,7 +121,9 @@
             .group(lifetimeGroup)
             .x(d3.time.scale().domain(time_domain))
             .xUnits(d3.time.months)
-            .renderArea(true);
+            .renderArea(true)
+            .margins({top: 10, right: 50, bottom: 30, left: 60})
+            .elasticY(true);
 
             lifetimes.xAxis().ticks(d3.time.months, 2)
                              .tickFormat(d3.time.format("%b %Y"));
@@ -135,10 +134,34 @@
       });
    </script>
 
-   <div id='per-month'></div>
-   <div id='repo-names'></div>
-   <div id='lifetimes'></div>
-   <div id='merged'></div>
-   <div id='per-week'></div>
-   <div id='community'></div>
+   <div class="row-fluid">
+     <div id='per-month'>
+       <div class='graphTitleLeft'>Pull Request Resolved Per Month
+       </div>
+      </div>
+      <div id='repo-names'>
+        <div class='graphTitleRight'>Total Resolved Pull Requests by Reposistory
+        </div>
+      </div>
+   </div>
+   <div class="row-fluid">
+     <div id='lifetimes'>
+      <div class = 'graphTitleLeft'>Average Pull Request Lifetime Per Month
+      </div>
+    </div>
+      <div id='merged'>
+        <div class = 'graphTitleRight'>Number of Pull Requests Merged vs. Closed
+        </div>
+      </div>
+   </div>
+   <div class="row-fluid">
+     <div id='per-week'>
+       <div class = 'graphTitleLeft'>Pull Requests Resolved Per Week
+     </div>
+     </div>
+     <div id='community'>
+       <div class = 'graphTitleRight'>Pull Requests From Community vs. Puppet Labs
+     </div>
+     </div>
+   </div>
 </body>

@@ -26,14 +26,13 @@ module PuppetCommunityData
     # of pull request objects for all closed pull requests in a given
     # repository
     #
-    # @param [Octokit] github_api is the instance of the GitHub API
+    # @param [Octokit::Client] github_api is the instance of the GitHub API
     # needed to read from the repository
     #
     # @ return [Array] of hashes containting data that  represents the pull requests
     # for the given repository
     def closed_pull_requests(github_api)
       closed_pull_requests = github_api.pull_requests(full_name, 'closed')
-      skip_next = false
       closed_pull_requests.collect do |pr|
 
         was_merged = !!(pr['merged_at'])
@@ -41,6 +40,7 @@ module PuppetCommunityData
         close_time = (Chronic.parse(pr['closed_at'])).to_time
 
         user = pr['user']
+        # Ensure that the user exists before trying to continue
         next unless user
         login = user['login']
         user_object = user_cache(login, github_api)
@@ -58,7 +58,18 @@ module PuppetCommunityData
     end
 
     ##
+    # The "user_cache" method mades it easier to populate the database
+    # by returning the login information for a user if that user has been
+    # encountered before. This prevents a call to GitHub
     #
+    # @param [String] login is the username of the user who submitted
+    # the pull request
+    #
+    # @param [Octokit::Client] github is the authenticated instance of the GitHub
+    # API
+    #
+    # return [User] the return value of the method if the user is found, a
+    # user object created given the login name
     def user_cache(login, github)
       return @users[login] if @users[login]
       @users[login] = github.user(login)

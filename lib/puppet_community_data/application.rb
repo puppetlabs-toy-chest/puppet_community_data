@@ -79,7 +79,7 @@ module PuppetCommunityData
         pull_requests = repo.closed_pull_requests(github_api)
         pull_requests.each do |pull_request|
           if pull_request.nil?
-            warn "nil pull request!"
+            warn "Encounter nil pull request, skipping database entry"
           else
             PullRequest.from_github(pull_request)
           end

@@ -21,6 +21,7 @@ class PullRequest < ActiveRecord::Base
       pr.time_closed = pr_data["time_closed"]
       pr.time_opened = pr_data["time_opened"]
       pr.from_community = pr_data["from_community"]
+      pr.closed = pr_data["closed_v_open"]
     end
     model
   end

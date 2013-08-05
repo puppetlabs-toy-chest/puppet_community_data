@@ -37,8 +37,28 @@ namespace :db do
 end
 
 namespace :job do
+  desc "Import pull requests into the DB if it's Sunday"
+  task :import_if_sunday => :environment do |t|
+
+    logger = Logger.new(STDOUT)
+
+    if not Date.today.sunday?
+      logger.debug("Data not imported since today is not Sunday")
+      Kernel.exit(true)
+    end
+
+    repo_names = ['puppetlabs/hiera','puppetlabs/puppetlabs-stdlib','puppetlabs/facter','puppetlabs/puppet']
+
+    app = PuppetCommunityData::Application.new
+    app.setup_environment
+    app.generate_repositories(repo_names)
+    app.write_pull_requests_to_database
+  end
+
+
   desc "Import pull requests into the DB"
   task :import => :environment do |t|
+
     repo_names = ['puppetlabs/hiera','puppetlabs/puppetlabs-stdlib','puppetlabs/facter','puppetlabs/puppet']
 
     app = PuppetCommunityData::Application.new

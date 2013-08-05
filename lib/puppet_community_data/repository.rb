@@ -36,6 +36,7 @@ module PuppetCommunityData
       closed_pull_requests.collect do |pr|
 
         was_merged = !!(pr['merged_at'])
+        closed = (pr['state'] == 'closed')
         open_time = (Chronic.parse(pr['created_at'])).to_time
         close_time = (Chronic.parse(pr['closed_at'])).to_time
 
@@ -51,7 +52,8 @@ module PuppetCommunityData
              "merge_status" => was_merged,
              "time_closed" => close_time,
              "time_opened" => open_time,
-             "from_community" => from_community]
+             "from_community" => from_community,
+             "closed_v_open" => closed]
       end
     end
   end

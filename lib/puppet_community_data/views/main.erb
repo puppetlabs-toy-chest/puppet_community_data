@@ -68,8 +68,7 @@
             .centerBar(true)
             .x(d3.time.scale().domain(time_domain))
             .xUnits(d3.time.months)
-            .margins({top: 10, right: 50, bottom: 30, left: 60})
-            .elasticY(true);
+            .margins({top: 10, right: 50, bottom: 30, left: 60});
 
           chart.xAxis().ticks(d3.time.months, 2)
                        .tickFormat(d3.time.format("%b %Y"));
@@ -99,8 +98,7 @@
             .centerBar(true)
             .x(d3.time.scale().domain(week_domain))
             .xUnits(d3.time.weeks)
-            .margins({top: 10, right: 10, bottom: 30, left: 60})
-            .elasticY(true);
+            .margins({top: 10, right: 10, bottom: 30, left: 60});
 
           weekChart.xAxis().ticks(d3.time.weeks, 6)
                        .tickFormat(d3.time.format("%m/%y"));
@@ -122,8 +120,7 @@
             .x(d3.time.scale().domain(time_domain))
             .xUnits(d3.time.months)
             .renderArea(true)
-            .margins({top: 10, right: 50, bottom: 30, left: 60})
-            .elasticY(true);
+            .margins({top: 10, right: 50, bottom: 30, left: 60});
 
             lifetimes.xAxis().ticks(d3.time.months, 2)
                              .tickFormat(d3.time.format("%b %Y"));

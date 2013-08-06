@@ -46,6 +46,7 @@ describe PuppetCommunityData::Repository do
       subject do
         s = repo
         github.stub(:pull_requests).with(full_name, 'closed').and_return(closed_puppet_pull_requests)
+        github.stub(:organization_member?).and_return(true)
         s.closed_pull_requests(github)
       end
 

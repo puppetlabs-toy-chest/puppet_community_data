@@ -8,6 +8,8 @@ require 'puppet_community_data/application'
 module PuppetCommunityData
   class WebApp < Sinatra::Base
 
+    set :root, File.expand_path('../../../', __FILE__)
+
     # Extend Sinatra with ActiveRecord database connections.
     register Sinatra::ActiveRecordExtension
 

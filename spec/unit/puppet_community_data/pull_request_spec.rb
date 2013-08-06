@@ -14,7 +14,9 @@ describe PullRequest do
                          "repo_owner" => 'puppetlabs',
                          "merge_status" => true,
                          "time_closed" => close_time,
-                         "time_opened" => open_time]}
+                         "time_opened" => open_time,
+                         "from_community" => false,
+                         "close_v_open" => true]}
 
     it "writes the pull request if it is new" do
       PullRequest.from_github(pr_hash)
@@ -29,7 +31,9 @@ describe PullRequest do
                          :repository_owner => 'puppetlabs',
                          :merged_status => true,
                          :time_closed => close_time,
-                         :time_opened => open_time)
+                         :time_opened => open_time,
+                         :from_community => false,
+                         :closed => true)
       PullRequest.from_github(pr_hash)
       expect(PullRequest.find_by_sql("select * from pull_requests").length).to eq(1)
     end

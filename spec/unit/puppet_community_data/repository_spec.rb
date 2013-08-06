@@ -81,6 +81,14 @@ describe PuppetCommunityData::Repository do
       it 'stores the correct open time' do
         expect(subject[0]["time_closed"]).to eq(Chronic.parse('2013-05-24T16:40:51Z').to_time)
       end
+
+      it 'stores whether or not the pull request is from the community' do
+        expect(subject[0]["from_community"]).to eq(false)
+      end
+
+      it 'stores the state of the pull request (open v closed)' do
+        expect(subject[0]["closed_v_open"]).to eq(true)
+      end
     end
   end
 end

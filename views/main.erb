@@ -59,7 +59,7 @@
              }
             );
 
-          var chart = dc.barChart("#per-month")
+          var monthChart = dc.barChart("#per-month")
             .width(900)
             .height(250)
             .gap(2)
@@ -70,7 +70,7 @@
             .xUnits(d3.time.months)
             .margins({top: 10, right: 50, bottom: 30, left: 60});
 
-          chart.xAxis().ticks(d3.time.months, 2)
+          monthChart.xAxis().ticks(d3.time.months, 2)
                        .tickFormat(d3.time.format("%b %Y"));
 
           var commChart = dc.pieChart('#community')

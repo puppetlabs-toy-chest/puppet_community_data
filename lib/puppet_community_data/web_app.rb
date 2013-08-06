@@ -13,10 +13,6 @@ module PuppetCommunityData
     # Extend Sinatra with ActiveRecord database connections.
     register Sinatra::ActiveRecordExtension
 
-    get '/overview' do
-      erb :overview
-    end
-
     get '/' do
       erb :main
     end

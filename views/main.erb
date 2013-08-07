@@ -20,7 +20,6 @@
                    });
 
           time_domain = d3.extent(dataset, function(d){return d.time;});
-
           week_domain = d3.extent(dataset, function(d){return d.week;});
 
           var pull_requests = crossfilter(dataset);
@@ -143,11 +142,11 @@
    </div>
    <div class="row-fluid">
      <div id='lifetimes'>
-      <div class = 'graphTitleLeft'>Average Pull Request Lifetime Per Month
+      <div class = 'graphTitleLeft'>Average Pull Request Lifetime Per Month ₁
       </div>
     </div>
       <div id='merged'>
-        <div class = 'graphTitleRight'>Number of Pull Requests Merged vs. Closed
+        <div class = 'graphTitleRight'>Number of Pull Requests Merged vs. Closed ₂
         </div>
       </div>
    </div>
@@ -157,8 +156,25 @@
      </div>
      </div>
      <div id='community'>
-       <div class = 'graphTitleRight'>Pull Requests From Community vs. Puppet Labs
+       <div class = 'graphTitleRight'>Pull Requests From Community vs. Puppet Labs ₃
      </div>
+     </div>
+   </div>
+   <div class="row-fluid">
+     <div class = 'footnoteText'>¹ The 'lifetime' of a pull request is the length of time (in minutes) from
+                                     when the pull request was opened to when it was closed or merged. This graph
+                                     looks at every pull request resolved in a given month and averages their
+                                     lifetimes to obtain each data point.<br>
+                                   ² This graph defines 'merged' pull requests as those that are marked as merged
+                                     on GitHub. This means it doesn't include pull requests that we retargeted and
+                                     merged manually, so in reality more patches where 'accepted' than this graph
+                                     suggests.<br>
+                                   ³ This graph measures Puppet Labs employees by checking if the submitter of the
+                                     pull request is a member of the Puppet Labs organization on GitHub. This means
+                                     that employees who had left Puppet Labs at the time this database was populated
+                                     will not be counted as community members. <br>
+
+
      </div>
    </div>
 </body>

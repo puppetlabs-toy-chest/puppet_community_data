@@ -5,159 +5,95 @@
   <script src="js/d3.v3/d3.v3.js"></script>
   <script src ="js/crossfilter-1.2.0/crossfilter.min.js"></script>
   <script src="js/dc.js-1.4.0/dc.js"></script>
+  <script src="js/charts.js"></script>
 </head>
-  <script type="text/javascript">
-      d3.json('/data/puppet_pulls', function(dataset) {
-          var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
+<script type="text/javascript">
+  d3.json('/data/puppet_pulls', function(dataset) {
+      var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
 
-          dataset = dataset.map(function(d){
-            return {'time': d3.time.month(dateFormat.parse(d.close_time)),
-                    'repo': d.repo_name,
-                    'ttl': d.ttl,
-                    'week': d3.time.week(dateFormat.parse(d.close_time)),
-                    'community': d.community,
-                    'merged': d.merged};
-                   });
+      var dataset = dataset.map(function(d){
+        return {'month': d3.time.month(dateFormat.parse(d.close_time)),
+        'repo': d.repo_name,
+        'ttl': d.ttl,
+        'week': d3.time.week(dateFormat.parse(d.close_time)),
+        'community': d.community,
+        'merged': d.merged};
+        });
 
-          time_domain = d3.extent(dataset, function(d){return d.time;});
-          week_domain = d3.extent(dataset, function(d){return d.week;});
+      var monthDomain = d3.extent(dataset, function(d){return d.month;});
+      var weekDomain = d3.extent(dataset, function(d){return d.week;});
 
-          var pull_requests = crossfilter(dataset);
-          var all = pull_requests.groupAll();
+      var pull_requests = crossfilter(dataset);
+      var all = pull_requests.groupAll();
 
-          var timeDimension = pull_requests.dimension(function(d){return d.time;});
-          var timeGroup = timeDimension.group().reduceCount().orderNatural();
+      var monthDimension = pull_requests.dimension(function(d){return d.month;});
 
-          var repoDimension = pull_requests.dimension(function(d){return d.repo;});
-          var repoGroup = repoDimension.group().reduceCount().orderNatural();
+      var repoDimension = pull_requests.dimension(function(d){return d.repo;});
 
-          var weekDimension = pull_requests.dimension(function(d){return d.week;});
-          var weekGroup = weekDimension.group().reduceCount().orderNatural();
+      var weekDimension = pull_requests.dimension(function(d){return d.week;});
 
-          var communityDimension = pull_requests.dimension(function(d){return d.community;});
-          var communityGroup = communityDimension.group().reduceCount().orderNatural();
+      var communityDimension = pull_requests.dimension(function(d){return d.community;});
 
-          var mergeDimension = pull_requests.dimension(function(d){return d.merged;});
-          var mergeGroup = mergeDimension.group().reduceCount().orderNatural();
+      var mergeDimension = pull_requests.dimension(function(d){return d.merged;});
 
+      monthlyBarChart("#per-month", monthDimension, monthDomain);
 
-          var lifetimeGroup = timeDimension.group().reduce(
-            function(p,v){
-              ++p.count;
-              p.sum_ttl += v.ttl;
-              p.avg = p.sum_ttl / p.count;
-              return p;
-            },
-            function(p,v){
-              --p.count;p.sum_ttl -= v.ttl;
-              p.avg = p.sum_ttl / p.count;
-              return p;
-            },
-            function(){
-            return {count: 0, sum_ttl: 0, avg: 0};
-             }
-            );
+      commChart("#community", communityDimension);
 
-          var monthChart = dc.barChart("#per-month")
-            .width(900)
-            .height(250)
-            .gap(2)
-            .dimension(timeDimension)
-            .group(timeGroup)
-            .centerBar(true)
-            .x(d3.time.scale().domain(time_domain))
-            .xUnits(d3.time.months)
-            .margins({top: 10, right: 50, bottom: 30, left: 60});
+      percentMergedChart("#merged", mergeDimension);
 
-          monthChart.xAxis().ticks(d3.time.months, 2)
-                       .tickFormat(d3.time.format("%b %Y"));
+      perRepositoryChart("#repo-names", repoDimension);
 
-          var commChart = dc.pieChart('#community')
-            .width(300)
-            .height(300)
-            .radius(100)
-            .dimension(communityDimension)
-            .group(communityGroup)
-            .colors(['#F1A82F', '#F1CD91']);
+      pullRequestsPerWeek("#per-week", weekDimension, weekDomain);
 
-          var mergeChart = dc.pieChart('#merged')
-            .width(300)
-            .height(300)
-            .radius(100)
-            .dimension(mergeDimension)
-            .group(mergeGroup)
-            .colors(['#7D64AC', '#501FAC']);
+      lifetimesPerMonth("#lifetimes", monthDimension, monthDomain);
 
-          var weekChart = dc.barChart("#per-week")
-            .width(900)
-            .height(250)
-            .gap(2)
-            .dimension(weekDimension)
-            .group(weekGroup)
-            .centerBar(true)
-            .x(d3.time.scale().domain(week_domain))
-            .xUnits(d3.time.weeks)
-            .margins({top: 10, right: 10, bottom: 30, left: 60});
+      dc.renderAll();
 
-          weekChart.xAxis().ticks(d3.time.weeks, 6)
-                       .tickFormat(d3.time.format("%m/%y"));
+      $('#inspectButton1').popover();
+      $('#inspectButton2').popover();
+  });
+</script>
 
-          var repoChart = dc.rowChart("#repo-names")
-            .width(400)
-            .height(200)
-            .group(repoGroup)
-            .dimension(repoDimension)
-            .colors(['#501FAC', '#6742AC', '#7D64AC', '#9487AC']);
-
-          repoChart.xAxis().ticks(5);
-
-          var lifetimes = dc.lineChart("#lifetimes")
-            .width(900)
-            .height(250)
-            .dimension(timeDimension)
-            .group(lifetimeGroup)
-            .x(d3.time.scale().domain(time_domain))
-            .xUnits(d3.time.months)
-            .renderArea(true)
-            .margins({top: 10, right: 50, bottom: 30, left: 60});
-
-            lifetimes.xAxis().ticks(d3.time.months, 2)
-                             .tickFormat(d3.time.format("%b %Y"));
-
-            lifetimes.valueAccessor(function(p) { return p.value.avg; });
-
-          dc.renderAll();
-      });
-   </script>
-
-   <div class="row-fluid">
-     <div id='per-month'>
-       <div class='graphTitleLeft'>Pull Request Resolved Per Month
-       </div>
-      </div>
-      <div id='repo-names'>
-        <div class='graphTitleRight'>Total Resolved Pull Requests by Repository
-        </div>
-      </div>
-   </div>
-   <div class="row-fluid">
-     <div id='lifetimes'>
-      <div class = 'graphTitleLeft'>Average Pull Request Lifetime Per Month
+<div class="row-fluid">
+  <div id='per-month'>
+    <div class='graphTitleLeft row-fluid'>
+      <div class='span6'>Pull Request Resolved Per Month</div>
+      <div class='span1 offset5'>
+        <% popoverTitle = "Description"%>
+        <% monthDescription = "A graph of the total number of pull requests resolved per month"%>
+        <button type='button' id= 'inspectButton1' class='btn btn-mini btn-default graphInfoButton' data-toggle='popover' data-placement='left' data-content=<%= "\"#{monthDescription}\"" %>data-title=<%= "\"#{popoverTitle}\"" %>)><i class='icon-search'></i></button>
       </div>
     </div>
-      <div id='merged'>
-        <div class = 'graphTitleRight'>Number of Pull Requests Merged vs. Closed
-        </div>
+  </div>
+  <div id='repo-names'>
+    <div class='graphTitleRight row-fluid'>
+      <div class = 'span6'>Resolved Pull Requests by Repository</div>
+      <div class = 'span1 offset5'>
+        <% repoDescription = "A graph of all total resolved pull requests broken down by repository"%>
+        <button type='button' id= 'inspectButton2' class='btn btn-mini btn-default graphInfoButton' data-toggle='popover' data-placement='left' data-content=<%= "\"#{repoDescription}\"" %>data-title=<%= "\"#{popoverTitle}\"" %>)><i class='icon-search'></i></button>
       </div>
-   </div>
-   <div class="row-fluid">
-     <div id='per-week'>
-       <div class = 'graphTitleLeft'>Pull Requests Resolved Per Week
-     </div>
-     </div>
-     <div id='community'>
-       <div class = 'graphTitleRight'>Pull Requests From Community vs. Puppet Labs
-     </div>
-     </div>
-   </div>
+    </div>
+  </div>
+</div>
+<div class="row-fluid">
+  <div id='lifetimes'>
+    <div class = 'graphTitleLeft'>Average Pull Request Lifetime Per Month
+    </div>
+  </div>
+  <div id='merged'>
+    <div class = 'graphTitleRight'>Number of Pull Requests Merged vs. Closed
+    </div>
+  </div>
+</div>
+<div class="row-fluid">
+  <div id='per-week'>
+    <div class = 'graphTitleLeft'>Pull Requests Resolved Per Week
+    </div>
+  </div>
+  <div id='community'>
+    <div class = 'graphTitleRight'>Pull Requests From Community vs. Puppet Labs
+    </div>
+  </div>
+</div>
 </body>

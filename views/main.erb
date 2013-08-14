@@ -8,10 +8,6 @@
   <script src="js/charts.js"></script>
 </head>
 <div class="row-fluid">
-  <input type = 'text' id='startDate'/>
-  <button id='inputButton' type='button'>Submit</button>
-</div>
-<div class="row-fluid">
   <div class = 'span6 offset1'>
     <input style='display:none;' type="text" class="span6" value="2" id="sl1" data-slider-max="4">
   </div>
@@ -80,14 +76,6 @@
 </body>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-      $(function() {
-        $('#inputButton').on('click', function () {
-          d3.json("/data/puppet_pulls?start=" + $("#startDate").val(), renderFunction);
-          })
-        })
-      })
-
   $('#sl1').slider({
     formater: function(value) {
     switch(value) {
@@ -101,8 +89,42 @@
       return "last 6 months";
     case 4:
       return "last 3 months";
-    }
+      }
     }
   })
+    var adjustGraphs = function(){
+      var value = graphSlider.getValue();
+      var startDate = new Date();
+      var dateString;
+      console.log(value);
+      switch(value) {
+        //0 = all time
+        case 0:
+          startDate.setFullYear(2010, 01, 01);
+          break;
+        // 1 = last 2 years
+        case 1:
+          startDate.setFullYear(startDate.getFullYear() - 2);
+          break;
+        // 2 = last year
+        case 2:
+          startDate.setFullYear(startDate.getFullYear() - 1);
+          break;
+        //3 = last 6 months
+        case 3:
+          startDate.setMonth(startDate.getMonth() - 9);
+          break;
+        //4 = last 3 months
+        case 4:
+          startDate.setMonth(startDate.getMonth() - 3);
+          break;
+      }
+      dateString = startDate.toString('yyyy-MM-dd');
+      d3.json("/data/puppet_pulls?start=" + dateString, renderFunction);
+    };
+
+ var graphSlider =  $('#sl1').slider()
+         .on('slideStop', adjustGraphs)
+         .data('slider');
 </script>
 

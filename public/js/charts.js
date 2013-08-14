@@ -106,3 +106,54 @@ function lifetimesPerMonth(location, monthDimension, monthDomain) {
 
   lifetimes.valueAccessor(function(p) { return p.value.avg; });
 }
+
+var renderFunction = function(dataset) {
+  var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
+  var dataset = dataset.map(function(d){
+    return {'month': d3.time.month(dateFormat.parse(d.close_time)),
+      'repo': d.repo_name,
+      'ttl': d.ttl,
+      'week': d3.time.week(dateFormat.parse(d.close_time)),
+      'community': d.community,
+      'merged': d.merged};
+  });
+
+  var monthDomain = d3.extent(dataset, function(d){return d.month;});
+  var weekDomain = d3.extent(dataset, function(d){return d.week;});
+
+  var pull_requests = crossfilter(dataset);
+  var all = pull_requests.groupAll();
+
+  var monthDimension = pull_requests.dimension(function(d){return d.month;});
+
+  var repoDimension = pull_requests.dimension(function(d){return d.repo;});
+
+  var weekDimension = pull_requests.dimension(function(d){return d.week;});
+
+  var communityDimension = pull_requests.dimension(function(d){return d.community;});
+
+  var mergeDimension = pull_requests.dimension(function(d){return d.merged;});
+
+  monthlyBarChart("#per-month", monthDimension, monthDomain);
+
+  commChart("#community", communityDimension);
+
+  percentMergedChart("#merged", mergeDimension);
+
+  perRepositoryChart("#repo-names", repoDimension);
+
+  pullRequestsPerWeek("#per-week", weekDimension, weekDomain);
+
+  lifetimesPerMonth("#lifetimes", monthDimension, monthDomain);
+
+  dc.renderAll();
+
+  $('#inspectButton1').popover();
+  $('#inspectButton2').popover();
+  $('#inspectButton3').popover();
+  $('#inspectButton4').popover();
+  $('#inspectButton5').popover();
+  $('#inspectButton6').popover();
+};
+
+d3.json("/data/puppet_pulls", renderFunction);

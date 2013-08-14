@@ -7,58 +7,15 @@
   <script src="js/dc.js-1.4.0/dc.js"></script>
   <script src="js/charts.js"></script>
 </head>
-<script type="text/javascript">
-  d3.json('/data/puppet_pulls', function(dataset) {
-      var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
-
-      var dataset = dataset.map(function(d){
-        return {'month': d3.time.month(dateFormat.parse(d.close_time)),
-        'repo': d.repo_name,
-        'ttl': d.ttl,
-        'week': d3.time.week(dateFormat.parse(d.close_time)),
-        'community': d.community,
-        'merged': d.merged};
-        });
-
-      var monthDomain = d3.extent(dataset, function(d){return d.month;});
-      var weekDomain = d3.extent(dataset, function(d){return d.week;});
-
-      var pull_requests = crossfilter(dataset);
-      var all = pull_requests.groupAll();
-
-      var monthDimension = pull_requests.dimension(function(d){return d.month;});
-
-      var repoDimension = pull_requests.dimension(function(d){return d.repo;});
-
-      var weekDimension = pull_requests.dimension(function(d){return d.week;});
-
-      var communityDimension = pull_requests.dimension(function(d){return d.community;});
-
-      var mergeDimension = pull_requests.dimension(function(d){return d.merged;});
-
-      monthlyBarChart("#per-month", monthDimension, monthDomain);
-
-      commChart("#community", communityDimension);
-
-      percentMergedChart("#merged", mergeDimension);
-
-      perRepositoryChart("#repo-names", repoDimension);
-
-      pullRequestsPerWeek("#per-week", weekDimension, weekDomain);
-
-      lifetimesPerMonth("#lifetimes", monthDimension, monthDomain);
-
-      dc.renderAll();
-
-      $('#inspectButton1').popover();
-      $('#inspectButton2').popover();
-      $('#inspectButton3').popover();
-      $('#inspectButton4').popover();
-      $('#inspectButton5').popover();
-      $('#inspectButton6').popover();
-  });
-</script>
-
+<div class="row-fluid">
+  <input type = 'text' id='startDate'/>
+  <button id='inputButton' type='button'>Submit</button>
+</div>
+<div class="row-fluid">
+  <div class = 'span6 offset1'>
+    <input style='display:none;' type="text" class="span6" value="2" id="sl1" data-slider-max="4">
+  </div>
+</div>
 <div class="row-fluid">
   <div id='per-month'>
     <div class='graphTitleLeft row-fluid'>
@@ -121,3 +78,31 @@
   </div>
 </div>
 </body>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $(function() {
+        $('#inputButton').on('click', function () {
+          d3.json("/data/puppet_pulls?start=" + $("#startDate").val(), renderFunction);
+          })
+        })
+      })
+
+  $('#sl1').slider({
+    formater: function(value) {
+    switch(value) {
+    case 0:
+      return "all time";
+    case 1:
+      return "last 2 years";
+    case 2:
+      return "last year";
+    case 3:
+      return "last 6 months";
+    case 4:
+      return "last 3 months";
+    }
+    }
+  })
+</script>
+

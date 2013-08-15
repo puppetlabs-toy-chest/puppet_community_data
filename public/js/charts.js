@@ -161,3 +161,50 @@ var renderFunction = function(dataset) {
 };
 
 d3.json("/data/puppet_pulls", renderFunction);
+
+var adjustGraphs = function(){
+  var value = graphSlider.getValue();
+  var startDate = new Date();
+  var dateString;
+  console.log(value);
+  switch(value) {
+    //0 = all time
+    case 0:
+      startDate.setFullYear(2011, 08, 01);
+      barGap = 2;
+      monthTickAmount = 2;
+      weekTickAmount = 8;
+      break;
+    // 1 = last 2 years
+    case 1:
+      startDate.setFullYear(startDate.getFullYear() - 2);
+      barGap = 2;
+      monthTickAmount = 2;
+      weekTickAmount = 6;
+      break;
+    // 2 = last year
+    case 2:
+      startDate.setFullYear(startDate.getFullYear() - 1);
+      barGap = 20;
+      monthTickAmount = 1;
+      weekTickAmount = 4;
+      break;
+    //3 = last 6 months
+    case 3:
+      startDate.setMonth(startDate.getMonth() - 9);
+      barGap = 50;
+      monthTickAmount = 1;
+      weekTickAmount = 4;
+      break;
+    //4 = last 3 months
+    case 4:
+      startDate.setMonth(startDate.getMonth() - 3);
+      barGap = 300;
+      monthTickAmount = 1;
+      weekTickAmount = 4;
+      break;
+  }
+  dateString = startDate.toString('yyyy-MM-dd');
+  d3.json("/data/puppet_pulls?start=" + dateString, renderFunction);
+};
+

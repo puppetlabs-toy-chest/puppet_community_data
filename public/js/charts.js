@@ -1,3 +1,7 @@
+var barGap = 2;
+var monthTickAmount = 2;
+var weekTickAmount = 6;
+
 /* Create a bar chart of the data in monthDomain grouped by month */
 function monthlyBarChart(location, monthDimension, monthDomain) {
   var monthGroup = monthDimension.group().reduceCount().orderNatural();
@@ -5,7 +9,7 @@ function monthlyBarChart(location, monthDimension, monthDomain) {
   var monthChart = dc.barChart(location)
     .width(900)
     .height(250)
-    .gap(2)
+    .gap(barGap)
     .dimension(monthDimension)
     .group(monthGroup)
     .centerBar(true)
@@ -13,7 +17,7 @@ function monthlyBarChart(location, monthDimension, monthDomain) {
     .xUnits(d3.time.months)
     .margins({top: 10, right: 50, bottom: 30, left: 60});
 
-  monthChart.xAxis().ticks(d3.time.months, 2)
+  monthChart.xAxis().ticks(d3.time.months, monthTickAmount)
     .tickFormat(d3.time.format("%b %Y"));
 }
 
@@ -22,7 +26,7 @@ function commChart(location, communityDimension) {
 
   var commChart = dc.pieChart(location)
     .width(300)
-    .height(300)
+    .height(200)
     .radius(100)
     .dimension(communityDimension)
     .group(communityGroup)
@@ -34,7 +38,7 @@ function percentMergedChart(location, mergeDimension) {
 
   var mergeChart = dc.pieChart(location)
     .width(300)
-    .height(300)
+    .height(200)
     .radius(100)
     .dimension(mergeDimension)
     .group(mergeGroup)
@@ -67,9 +71,9 @@ function pullRequestsPerWeek(location, weekDimension, weekDomain) {
     .centerBar(true)
     .x(d3.time.scale().domain(weekDomain))
     .xUnits(d3.time.weeks)
-    .margins({top: 10, right: 10, bottom: 30, left: 60});
+    .margins({top: 10, right: 50, bottom: 30, left: 60});
 
-  weekChart.xAxis().ticks(d3.time.weeks, 6)
+  weekChart.xAxis().ticks(d3.time.weeks, weekTickAmount)
     .tickFormat(d3.time.format("%m/%y"));
 }
 
@@ -101,7 +105,7 @@ function lifetimesPerMonth(location, monthDimension, monthDomain) {
     .renderArea(true)
     .margins({top: 10, right: 50, bottom: 30, left: 60});
 
-  lifetimes.xAxis().ticks(d3.time.months, 2)
+  lifetimes.xAxis().ticks(d3.time.months, monthTickAmount)
     .tickFormat(d3.time.format("%b %Y"));
 
   lifetimes.valueAccessor(function(p) { return p.value.avg; });

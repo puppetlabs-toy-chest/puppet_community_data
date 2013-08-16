@@ -1,3 +1,19 @@
+.container {
+  margin: 0 0 0 10px;
+}
+
+.puppetLogo {
+  margin: 5px 0px 0px 0px;
+}
+
+.footerSlider {
+ margin: 10px 0px 0px 0px;
+}
+
+.resetButton {
+  margin: 10px 0px 0px 0px;
+}
+
 .footer {
   background-color: #FAFAFA;
   -webkit-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.065);
@@ -5,4 +21,5 @@
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.065);
   border-radius: 4px; border: 1px solid #D4D4D4;
   background-image: -webkit-linear-gradient(bottom,white,#F2F2F2);
+  -moz-linear-gradient(bottom,white,#F2F2F2);
 }

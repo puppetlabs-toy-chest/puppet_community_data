@@ -11,38 +11,42 @@
   <link href= "css/layout.css" rel="stylesheet" media="screen">
   <div class="navbar">
     <div class="navbar-inner">
-      <a class="brand" href="#"><img src="http://i.imgur.com/uUqXf0J.png">Pull Request Metrics</a>
+      <a class="brand" href="#"><img src="http://i.imgur.com/uUqXf0J.png">Puppet Labs Pull Request Metrics</a>
     </div>
   </div>
   <%= yield%>
   <div id="footer" class="navbar navbar-fixed-bottom footer">
     <div class="container">
-      <p class="muted credit"><img src="http://i.imgur.com/uUqXf0J.png"> Puppet Pull Request Metrics
-	  <input style='display:none;' type="text" class="span6" value="2" id="sl1" data-slider-max="4" data-slider-value="-4"></input>
-	  <div class = 'span2 offset1'><a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a></div></p>
+      <div class="row-fluid">
+        <div class ="span4 puppetLogo"><p class="muted credit"><img src="http://i.imgur.com/uUqXf0J.png"> Puppet Labs Pull Request Metrics</p></div>
+        <div class='span3 footerSlider'>
+          <input style='display:none;' type="text" id="sl1" data-slider-max="4" data-slider-value="2"></input>
+        </div>
+        <div class="span2 resetButton"><a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a></div>
+      </div>
     </div>
   </div>
 </html>
 
 <script type="text/javascript">
   $('#sl1').slider({
-    formater: function(value) {
-    switch(value) {
-    case 0:
-      return "all time";
-    case 1:
-      return "last 2 years";
-    case 2:
-      return "last year";
-    case 3:
-      return "last 6 months";
-    case 4:
-      return "last 3 months";
-      }
+formater: function(value) {
+  switch(value) {
+  case 0:
+    return "all time";
+  case 1:
+    return "last 2 years";
+  case 2:
+    return "last year";
+  case 3:
+    return "last 6 months";
+  case 4:
+    return "last 3 months";
     }
-  })
+  }
+})
 
- var graphSlider =  $('#sl1').slider()
-         .on('slideStop', adjustGraphs)
-         .data('slider');
+var graphSlider =  $('#sl1').slider()
+.on('slideStop', adjustGraphs)
+.data('slider');
 </script>

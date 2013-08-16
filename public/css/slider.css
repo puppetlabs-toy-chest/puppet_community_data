@@ -23,6 +23,7 @@
   left: 0;
 }
 .slider.slider-horizontal .slider-selection {
+  background: #BABABA;
   height: 100%;
   top: 0;
   bottom: 0;

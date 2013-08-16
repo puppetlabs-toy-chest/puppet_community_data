@@ -1,6 +1,6 @@
-var barGap = 2;
-var monthTickAmount = 2;
-var weekTickAmount = 6;
+var barGap = 20;
+var monthTickAmount = 1;
+var weekTickAmount = 4;
 
 /* Create a bar chart of the data in monthDomain grouped by month */
 function monthlyBarChart(location, monthDimension, monthDomain) {

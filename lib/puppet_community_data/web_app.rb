@@ -21,7 +21,7 @@ module PuppetCommunityData
       start_date = params[:start]
       one_year = (Date.today - 360).to_s
       start_date ||= one_year
-      puppet_pulls = PullRequest.all(:conditions => ["time_closed > ?", Date.parse(start_date)])
+      puppet_pulls = PullRequest.where("time_closed > ?", Date.parse(start_date))
       pull_requests = Array.new
       puppet_pulls.each do |pr|
 

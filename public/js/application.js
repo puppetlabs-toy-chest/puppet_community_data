@@ -1,8 +1,17 @@
+// Start with the formatting for the "one year"
+// time scale since this is what the dashboard defaults to
 var barGap = 20;
 var monthTickAmount = 1;
 var weekTickAmount = 4;
 
-/* Create a bar chart of the data in monthDomain grouped by month */
+// Constants for slider ticks
+var ALL_TIME = 0;
+var TWO_YEARS = 1;
+var LAST_YEAR = 2;
+var SIX_MONTHS = 3;
+var THREE_MONTHS = 4;
+
+/* Generate a bar chart of the number of pull requests merged per month */
 function monthlyBarChart(location, monthDimension, monthDomain) {
   var monthGroup = monthDimension.group().reduceCount().orderNatural();
 
@@ -21,6 +30,7 @@ function monthlyBarChart(location, monthDimension, monthDomain) {
     .tickFormat(d3.time.format("%b %Y"));
 }
 
+/* Generate a yellow pie chart depicting percentage of community vs. Puppet Labs employee pull requests */
 function commChart(location, communityDimension) {
   var communityGroup = communityDimension.group().reduceCount().orderNatural();
 
@@ -33,6 +43,7 @@ function commChart(location, communityDimension) {
     .colors(['#F1A82F', '#F1CD91']);
 }
 
+/* Generate a purple pie chart depicting percent of pull requests merged vs closed */
 function percentMergedChart(location, mergeDimension) {
   var mergeGroup = mergeDimension.group().reduceCount().orderNatural();
 
@@ -45,6 +56,7 @@ function percentMergedChart(location, mergeDimension) {
     .colors(['#7D64AC', '#501FAC']);
 }
 
+/* Generate a purple row chart depicting pull requests resolved per repository */
 function perRepositoryChart(location, repoDimension) {
   var repoGroup = repoDimension.group().reduceCount().orderNatural();
 
@@ -58,6 +70,7 @@ function perRepositoryChart(location, repoDimension) {
   repoChart.xAxis().ticks(5);
 }
 
+/* Generate a bar chart of number pull requests merged per week */
 function pullRequestsPerWeek(location, weekDimension, weekDomain) {
 
   var weekGroup = weekDimension.group().reduceCount().orderNatural();
@@ -77,6 +90,7 @@ function pullRequestsPerWeek(location, weekDimension, weekDomain) {
     .tickFormat(d3.time.format("%m/%y"));
 }
 
+/* Generate a line chart depicting average life time of resolved pull requests per month */
 function lifetimesPerMonth(location, monthDimension, monthDomain) {
   var lifetimeGroup = monthDimension.group().reduce(
       function(p,v){
@@ -111,6 +125,7 @@ function lifetimesPerMonth(location, monthDimension, monthDomain) {
   lifetimes.valueAccessor(function(p) { return p.value.avg; });
 }
 
+/* Get dataset, define and render graphs, and enable buttons */
 var renderFunction = function(dataset) {
   var dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ');
   var dataset = dataset.map(function(d){
@@ -160,44 +175,41 @@ var renderFunction = function(dataset) {
   $('#inspectButton6').popover();
 };
 
+/* Take in json data for graphs */
 d3.json("/data/puppet_pulls", renderFunction);
 
+/* Adjust graphs according to slider value */
 var adjustGraphs = function(){
   var value = graphSlider.getValue();
   var startDate = new Date();
   var dateString;
   console.log(value);
   switch(value) {
-    //0 = all time
-    case 0:
+    case ALL_TIME:
       startDate.setFullYear(2011, 08, 01);
       barGap = 2;
       monthTickAmount = 2;
       weekTickAmount = 8;
       break;
-    // 1 = last 2 years
-    case 1:
+    case TWO_YEARS:
       startDate.setFullYear(startDate.getFullYear() - 2);
       barGap = 2;
       monthTickAmount = 2;
       weekTickAmount = 6;
       break;
-    // 2 = last year
-    case 2:
+    case LAST_YEAR:
       startDate.setFullYear(startDate.getFullYear() - 1);
       barGap = 20;
       monthTickAmount = 1;
       weekTickAmount = 4;
       break;
-    //3 = last 6 months
-    case 3:
-      startDate.setMonth(startDate.getMonth() - 9);
-      barGap = 50;
+    case SIX_MONTHS:
+      startDate.setMonth(startDate.getMonth() - 6);
+      barGap = 100;
       monthTickAmount = 1;
       weekTickAmount = 4;
       break;
-    //4 = last 3 months
-    case 4:
+    case THREE_MONTHS:
       startDate.setMonth(startDate.getMonth() - 3);
       barGap = 300;
       monthTickAmount = 1;

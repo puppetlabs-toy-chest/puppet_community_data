@@ -1,0 +1,19 @@
+.graphTitleLeft {
+  margin: 0px 0px 0px 60px;
+  width: 90%;
+  height: 20%;
+}
+
+.graphTitleRight {
+  margin: 0px 0px 0px 20px;
+  width: 100%;
+  height: 20%;
+}
+
+.graphInfoButton {
+  width: 30px;
+}
+
+.bottomRow {
+  margin: 0px 0px 75px 0px;
+}
